@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Generate Key Points | SmartSync</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='generatekeypoints.css') }}">
+        {% include 'whitelogoheader.html' %}
+    </head>
+    <body>
+        <div id="chat-container">
+            <div id="left-panel">
+                <label for="topic-input">Generate keypoints for topic:
+                <input type="text" id="topic-input" placeholder="Enter Topic"></label>
+
+                <label>It should consist of <input type="text" id="num-subtopics" placeholder="Enter number of slides"> slides.</label>
+
+                <label for="objectives-textarea">The following are the objectives that should be included in the presentation:</label>
+                <textarea id="objectives-textarea" rows="5" placeholder="Enter objectives"></textarea>
+
+                <button onclick="sendMessage()">Generate</button>
+            </div>
+            <div id="right-panel">
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>View Presentation | SmartSync</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        {% include 'darkbluelogoheader.html' %}
+    </head>
+    <body>
+        <div class="view-container-presentation">
+            <div class="slideshow-presentation">
+                <div class="mySlides fade">
+                    <img src="static/pictures/1.png" style="width:95%">
+                </div>
+
+                <div class="mySlides fade">
+                    <img src="static/pictures/LandingPage.png" style="width:95%">
+                </div>
+
+                <div class="mySlides fade">
+                    <img src="static/pictures/SignIn.png" style="width:95%">
+                </div>
+
+                <div class="mySlides fade">
+                    <img src="static/pictures/SignUp.png" style="width:95%">
+                </div>
+
+                <div class="mySlides fade">
+                    <img src="static/pictures/Home.png" style="width:95%">
+                </div>
+
+                <div class="mySlides fade">
+                    <img src="static/pictures/ViewPresentation.png" style="width:95%">
+                </div>
+                <div class="mySlides fade">
+                    <img src="static/pictures/Choose.png" style="width:95%">
+                </div>
+
+                <div class="mySlides fade">
+                    <img src="static/pictures/GenerateKeyPoints.png" style="width:95%">
+                </div>
+
+                <div class="mySlides fade">
+                    <img src="static/pictures/GeneratePresentation.png" style="width:95%">
+                </div>
+                <!-- Next and previous buttons -->
+                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            </div>
+            <button>Download Presentation</button>
+        </div>
+    </body>
+</html>

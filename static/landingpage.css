@@ -1,0 +1,155 @@
+    * {
+      font-family: 'Libre Baskerville', serif;
+      font-family: 'Roboto', sans-serif;
+      font-family: 'Roboto Condensed', sans-serif;
+    }
+
+    .logo {
+        display: flex;
+        justify-content: center;
+        margin-top: 3em;
+        font-size: 20px;
+    }
+
+    .logo img {
+        /* Add styles for the image inside .logo */
+        height: 160px; /* Adjust the height as needed */
+        width: auto; /* Maintain aspect ratio */
+    }
+
+    body {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: 0;
+        height: 100vh;
+        color: white;
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Creates two columns with equal width */
+        height: 100vh;
+    }
+
+    .name {
+        display: flex;
+        justify-content: center;
+        margin-top: 3em;
+        font-size: 20px;
+    }
+
+    .tagline {
+        font-size: 20px;
+        text-align: center;
+        line-height: 1.6;
+        letter-spacing: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 70px;
+        margin-bottom: 80px;
+    }
+
+    .button-62 {
+        background: linear-gradient(to bottom right, #FFF, #cecbc9);
+        border: 0;
+        border-radius: 20px;
+        color: #061761;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 2.5;
+        outline: transparent;
+        padding: 0 1rem;
+        text-align: center;
+        text-decoration: none;
+        transition: box-shadow .2s ease-in-out;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        white-space: nowrap;
+    }
+
+    .button-62:not([disabled]):hover {
+        box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(244, 237, 239, 0.5), .125rem .125rem 1rem rgba(226, 221, 217, 0.5);
+    }
+
+    .btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .button-61 {
+        background: transparent; /* Make the button background transparent */
+        border: 0;
+        border-radius: 20px;
+        color: #ffffff;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 2.5;
+        outline: transparent;
+        padding: 0 1rem;
+        text-align: center;
+        text-decoration: none;
+        transition: box-shadow .2s ease-in-out;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        white-space: nowrap;
+    }
+
+    /*.button-61:not([disabled]):focus {
+        box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+    }*/
+
+    .button-61:not([disabled]):hover {
+        box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(244, 237, 239, 0.5), .125rem .125rem 1rem rgba(226, 221, 217, 0.5);
+    }
+   @media (min-width: 730px) and (max-width: 1497px) {
+        body {
+            background-image: url('landingpic.png');
+            background-size: 100%;
+
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            height: 100vh;
+            color: white;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Creates two columns with equal width */
+            height: 100vh;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            margin-top: 3em;
+            font-size: 20px;
+        }
+
+        .tagline {
+            font-size: 20px;
+            text-align: center;
+            line-height: 1.6;
+            letter-spacing: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        img {
+          height: 160px;
+
+        }
+
+    }

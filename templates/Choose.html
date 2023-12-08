@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Choose | SmartSync</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='choose.css') }}">
+        {% include 'darkbluelogoheader.html' %}
+    </head>
+    <body>
+          <div class="container">
+              <div class="item">
+                  <div class="tagline">
+                      <h1>How would you like to <br> create?</h1>
+                  </div>
+                  <div class="btn">
+                    <a href="{{ url_for('generate.key_points_route') }}"> <button class="button-62" role="button">Generate Key Points</button> </a>
+                    <a href="{{ url_for('generate.presentation_route') }}"> <button class="button-62" role="button">Generate Presentation</button> </a>
+                  </div>
+              </div>
+              <div class="item bg"></div>
+          </div>
+    </body>
+</html>

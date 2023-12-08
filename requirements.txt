@@ -1,0 +1,14 @@
+Flask
+openai==0.28
+python-pptx
+firebase-admin
+python-firebase
+Flask-Login
+python-dotenv
+reportlab
+Aspose.slides
+
+
+
+
+

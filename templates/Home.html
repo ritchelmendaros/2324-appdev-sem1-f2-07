@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home | SmartSync</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        {% include 'darkbluelogoheader.html' %}
+    </head>
+    <body>
+        <div class="latestPresentations">
+            <div class="latest">Latest Presentations</div>
+            <div class="btnCreate">
+                <a href="{{ url_for('choose.choose_route') }}"><button>Create New Presentation</button></a>
+            </div>
+            <div class="pastPresentations">
+                <a href="{{ url_for('presentation.view_presentation_route') }}"><img src="static/pictures/2.png"></a>
+                <a href="{{ url_for('presentation.view_presentation_route') }}"><img src="static/pictures/3.png"></a>
+                <a href="{{ url_for('presentation.view_presentation_route') }}"><img src="static/pictures/4.png"></a>
+            </div>
+        </div>
+    </body>
+</html>

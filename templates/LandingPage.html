@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Roboto+Condensed:300,400,700">
+      <link rel="stylesheet" href="{{ url_for('static', filename='landingpage.css') }}">
+      <title>SmartSync</title>
+    </head>
+    <body style="background-image: url('static/pictures/landingpic.png');">
+      <div class="container">
+        <div class="item">
+          <div class="logo">
+            <img src="static/pictures/white_logo.png" />
+          </div>
+          <div class="tagline">
+            <h1>Intelligent Slides <br> for Effortless Excellence</h1>
+          </div>
+          <div class="btn">
+            <a href = "{{ url_for('account.signin_route') }}"><button class="button-62" role="button">Get Started</button></a>
+            <button class="button-61" role="button">Learn More</button>
+          </div>
+        </div>
+        <div class="item bg"></div>
+      </div>
+    </body>
+</html>

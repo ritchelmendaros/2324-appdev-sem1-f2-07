@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ url_for('static', filename='signstyle.css') }}">
+        <title>Sign In | SmartSync</title>
+    </head>
+    <body>
+        <div class="row no-gutters">
+            <div class="col-md-6 no-gutters">
+                <div class="signleft-side text-right">
+                    <img src="static\pictures\white_logo.png" class="signLogo">
+                    <div class="line"></div>
+                    <h5 class="signleft-side-h5">Intelligent Slide for Effortless Excellence</h5>
+                </div>
+            </div>
+            <div class="col-md-6 no-gutters">
+                <div class="signright-side">
+                    <form method="post" autocomplete="off" action="{{ url_for('signin') }}">
+                        <h3 class="signINh3">Sign In</h3>
+                        <br>
+                        <input class="signinputtxt" type="text" name="username" placeholder="Username">
+                        <input class="signinputtxt" type="password" name="password" placeholder="Password">
+                        {% with messages = get_flashed_messages() %}
+                          {% if messages %}
+                            <ul class="flashes">
+                              {% for message in messages %}
+                                <li>{{ message }}</li>
+                              {% endfor %}
+                            </ul>
+                          {% endif %}
+                        {% endwith %}
+                        <br>
+                        <button class="signbtn">Sign In</button>
+                    </form>
+                    <p style="margin-top: 40px;">No Account? <a href="{{ url_for('account.signup_route') }}" style="color: #121830; text-decoration: underline;">Sign Up</a></p>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

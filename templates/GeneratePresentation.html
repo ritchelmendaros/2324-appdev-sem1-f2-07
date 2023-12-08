@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Generate Presentation | SmartSync</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        {% include 'darkbluelogoheader.html' %}
+    </head>
+    <body>
+        <div class="container-inputs" >
+            <div class="inputs" id="myDivv" style="display: block">
+                <form method="post" autocomplete="off" action="/GeneratePresentation" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="action1">
+                    <label for="topic">Presentation Title:
+                    <input type="text" id="presentation-title" name="title" placeholder="Enter Title"></label>
+                    <label for="topic">Presented by:
+                    <input type="text" id="presentor" name="presentation-presentor" placeholder="Enter Presentor"></label>
+                    <label>Input presentation contents</label><br>
+                    <textarea type="textarea" id="keypoints" name="contents" rows="8" cols="43" placeholder="Input content" autocomplete="off" required></textarea><br>
+                    <label>Choose template</label><br>
+                    <div class="checkbox-container">
+<!--                        <input type="checkbox" id="simple" name="template" value="simple" onclick="handleCheckboxClick('simple')">-->
+<!--                        <label for="simple">Simple</label>-->
+<!--                        <input type="checkbox" id="bright" name="template" value="bright" onclick="handleCheckboxClick('bright')">-->
+<!--                        <label for="bright">Bright Modern</label>-->
+<!--                        <input type="checkbox" id="modern" name="template" value="modern" onclick="handleCheckboxClick('modern')">-->
+<!--                        <label for="modern">Dark Modern</label><br>-->
+<!--                        <input type="checkbox" id="darkblue" name="template" value="darkblue" onclick="handleCheckboxClick('darkblue')">-->
+<!--                        <label for="darkblue">Dark Blue</label>-->
+                        <select name="templates" id="template">
+                          <option value="simple">Simple</option>
+                          <option value="bright_modern">Bright Modern</option>
+                          <option value="dark_modern">Dark Modern</option>
+                          <option value="darkblue">Dark Blue</option>
+                        </select>
+                    </div>
+                    <input type="submit" value="Generate Presentation" onclick="toggleDiv()">
+                </form>
+                <div class="edit" id="myDiv" style="display: none">
+                        <form action="/GeneratePresentation" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="action" value="action2">
+                            <label>Edit Specific Slide
+                            <input type="text" id="slideNum" name="slide_num" placeholder="Enter Slide Number" required></label>
+                            <label>Instruction
+                                <textarea type="textarea" id="instructions" name="instruction" rows="6" cols="43" placeholder="Enter Instruction" required></textarea></label>
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="auto" name="isAuto" value="auto">
+                                <label for="auto">Auto Generated</label>
+                                <input type="file" id="myFile" name="filename"></div>
+<!--                            <input type="submit" value="Upload">-->
+                            <input type="submit" value="Revert">
+                            <input type="submit" value="Done">
+                        </form>
+                    </div>
+            </div>
+        </div>
+        <div class="generate-container-presentation">
+            <div class="generated-content">
+                <iframe src="{{ url_for('static', filename=pdf_path) }}" width="100%" height="450px"></iframe>
+            </div>
+            <button onclick="downloadPresentation()" >Download Presentation</button>
+        </div>
+
+    <script>
+     function toggleDiv() {
+      var div = document.getElementById('myDiv');
+      var divv = document.getElementById('myDivv');
+      div.style.display = block;
+      divv.style.display = none;
+    }
+        function generatePresentation() {
+            // Get the form and serialize its data
+            var form = document.getElementById('presentationForm');
+            var formData = new FormData(form);
+
+            // Make a POST request to the server
+            fetch('{{ url_for('generate_presentation') }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the generated presentation content
+                if (data.status === 'success') {
+                    displayGeneratedPresentation(data.path);
+                    document.getElementById('presentationContent').innerHTML = `Presentation successfully generated! <br>Path: ${data.path}`;
+                } else {
+                    document.getElementById('presentationContent').innerHTML = 'Failed to generate presentation';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        function downloadPresentation() {
+            // redirect to the /download route
+            window.location.href = '{{ url_for('download_file', filename='generated_presentation.pptx') }}';
+        }
+        function displaySlideshow(imageUrls) {
+            // Initialize Swiper
+            var swiper = new Swiper('.swiper-container', {
+                slidesPerView: 1,
+                spaceBetween: 10,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+            });
+
+            // Dynamically add slides to Swiper
+            var swiperWrapper = document.getElementById('swiperWrapper');
+            swiperWrapper.innerHTML = '';
+            imageUrls.forEach(function (imageUrl) {
+                var slide = document.createElement('div');
+                slide.className = 'swiper-slide';
+                slide.innerHTML = '<img src="' + imageUrl + '" alt="Slide">';
+                swiperWrapper.appendChild(slide);
+            });
+        }
+        function displayGeneratedPresentation(presentationPath) {
+            var iframe = document.getElementById('presentationIframe');
+            iframe.src = presentationPath;
+        }
+    </script>
+    </body>
+</html>

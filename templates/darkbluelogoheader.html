@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Roboto+Condensed:300,400,700">
+        <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+        <script src="{{ url_for('static', filename='scripts.js')}}"></script>
+        <title></title>
+    </head>
+    <body>
+    <div class="navbar">
+        <div class="navbar-logo">
+            <img src="/static/pictures/darkblue_logo.png" style="max-width: 30%;" alt="Logo">
+        </div>
+        <a class="dark" href="{{ url_for('home.home_route') }}">HOME</a>
+        <a class="dark" href="{{ url_for('choose.choose_route') }}">CREATE</a>
+        <a class="user-icon" href="{{ url_for('home.home_route') }}" style="color: #121830; font-family: 'Roboto Condensed', sans-serif; font-size: 18px;">
+            {% if user_info.is_logged_in %}
+                <p>{{ user_info.first_name }}<i class="fas fa-user" style="margin-left: 5px;"></i></p>
+            {% else %}
+                <p>None<i class="fas fa-user" style="margin-left: 15px;"></i></p>
+            {% endif %}
+        </a>
+    </div>
+    </body>
+</html>

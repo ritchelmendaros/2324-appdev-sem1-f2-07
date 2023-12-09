@@ -34,8 +34,8 @@ def simple(prs, slides_content):
             content_frame = content_box.text_frame
             title_frame = title_box.text_frame
 
-            slide_format(title_frame, 50, 'Gill Sans MT', 5, 14, 56, 0, 0)
-            slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 16)
+            slide_format(title_frame, 50, 'Franklin Gothic Demi', 5, 14, 56, 0, 0)
+            slide_format(content_frame, 32, 'Bahnschrift', 5, 14, 56, 0, 16)
 
         elif count < second and count >= first:
             slide = prs.slides.add_slide(prs.slide_layouts[6])
@@ -55,8 +55,8 @@ def simple(prs, slides_content):
             content_frame = content_box.text_frame
             title_frame = title_box.text_frame
 
-            slide_format(title_frame, 72, 'Gill Sans MT', 5, 14, 56, 0, 0)
-            slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 20)
+            slide_format(title_frame, 50, 'Franklin Gothic Demi', 5, 14, 56, 0, 0)
+            slide_format(content_frame, 32, 'Bahnschrift', 5, 14, 56, 0, 20)
 
         elif count < third and count >= second:
             slide = prs.slides.add_slide(prs.slide_layouts[6])
@@ -69,8 +69,8 @@ def simple(prs, slides_content):
             content_frame = content_box.text_frame
             title_frame = title_box.text_frame
 
-            slide_format(title_frame, 50, 'Gill Sans MT', 5, 14, 56, 0, 0)
-            slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 25)
+            slide_format(title_frame, 50, 'Franklin Gothic Demi', 5, 14, 56, 0, 0)
+            slide_format(content_frame, 32, 'Bahnschrift', 5, 14, 56, 0, 25)
         else:
             slide = prs.slides.add_slide(prs.slide_layouts[6])
             file_path = os.path.join('static', 'pictures', '4.png')
@@ -89,8 +89,8 @@ def simple(prs, slides_content):
             content_frame = content_box.text_frame
             title_frame = title_box.text_frame
 
-            slide_format(title_frame, 66, 'Gill Sans MT', 5, 14, 56, 0, 0)
-            slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 16)
+            slide_format(title_frame, 50, 'Franklin Gothic Demi', 5, 14, 56, 0, 0)
+            slide_format(content_frame, 32, 'Bahnschrift', 5, 14, 56, 0, 16)
         count += 1
 
 
@@ -122,8 +122,8 @@ def update_simple(prs, file_path, auto, hasPicture, slide_content, slideNum):
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        slide_format(title_frame, 50, 'Gill Sans MT', 5, 14, 56, 0, 0)
-        slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 16)
+        slide_format(title_frame, 50, 'Franklin Gothic Demi', 5, 14, 56, 0, 0)
+        slide_format(content_frame, 32, 'Bahnschrift', 5, 14, 56, 0, 16)
 
     elif slideNum < second and slideNum >= first:
         slide = prs.slides[slideNum]
@@ -145,8 +145,8 @@ def update_simple(prs, file_path, auto, hasPicture, slide_content, slideNum):
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        slide_format(title_frame, 72, 'Gill Sans MT', 5, 14, 56, 0, 0)
-        slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 20)
+        slide_format(title_frame, 50, 'Franklin Gothic Demi', 5, 14, 56, 0, 0)
+        slide_format(content_frame, 32, 'Bahnschrift', 5, 14, 56, 0, 20)
 
     elif slideNum < third and slideNum >= second:
         slide = prs.slides[slideNum]
@@ -159,8 +159,8 @@ def update_simple(prs, file_path, auto, hasPicture, slide_content, slideNum):
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        slide_format(title_frame, 50, 'Gill Sans MT', 5, 14, 56, 0, 0)
-        slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 25)
+        slide_format(title_frame, 50, 'Franklin Gothic Demi', 5, 14, 56, 0, 0)
+        slide_format(content_frame, 32, 'Bahnschrift', 5, 14, 56, 0, 25)
 
     else:
         slide = prs.slides[slideNum]
@@ -183,5 +183,5 @@ def update_simple(prs, file_path, auto, hasPicture, slide_content, slideNum):
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        slide_format(title_frame, 66, 'Gill Sans MT', 5, 14, 56, 0, 0)
-        slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 16)
+        slide_format(title_frame, 50, 'Franklin Gothic Demi', 5, 14, 56, 0, 0)
+        slide_format(content_frame, 32, 'Bahnschrift', 5, 14, 56, 0, 16)

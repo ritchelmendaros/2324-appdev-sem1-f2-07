@@ -218,8 +218,8 @@ def generate_presentation():
                 template_choice = "simple"
             elif template_choice == "dark_modern":
                 template_choice = "dark_modern"
-            elif template_choice == "bright":
-                template_choice = "bright_modern"
+            elif template_choice == "minimal_darkgreen":
+                template_choice = "minimal_darkgreen"
             elif template_choice == "darkblue":
                 template_choice = "dark_blue"
 

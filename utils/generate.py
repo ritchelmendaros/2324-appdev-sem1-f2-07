@@ -3,7 +3,7 @@ import os
 from utils.template_simple import simple, update_simple
 from utils.template_dark_modern import dark_modern, update_dark_modern
 from utils.template_dark_blue import dark_blue, update_dark_blue
-from utils.template_bright_modern import bright_modern, update_bright_modern
+from utils.template_minimal_darkgreen import minimal_darkgreen, update_minimal_darkgreen
 from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.util import Pt
@@ -121,13 +121,18 @@ def create_ppt(slides_content, template_choice, presentation_title, presenter_na
                 run.font.color.rgb = RGBColor(255, 255, 255)
         dark_blue(prs, slides_content)
 
-    elif template_choice == 'bright_modern':
+    elif template_choice == 'minimal_darkgreen':
         for paragraph in title.text_frame.paragraphs:
             for run in paragraph.runs:
-                run.font.name = 'Arial'
-                run.font.size = Pt(115)
-                run.font.color.rgb = RGBColor(255, 20, 147)  # RGB for deep pink color
-        bright_modern(prs, slides_content)
+                run.font.name = 'Oswald'
+                run.font.size = Pt(90)
+                run.font.color.rgb = RGBColor(255, 255, 255)
+        for paragraph in subtitle.text_frame.paragraphs:
+            for run in paragraph.runs:
+                run.font.size = Pt(40)
+                run.font.name = 'Oswald'
+                run.font.color.rgb = RGBColor(255, 255, 255) # RGB for orange color
+        minimal_darkgreen(prs, slides_content)
 
     # Delete the first two slides after all new slides have been added
     delete_first_two_slides(prs)
@@ -161,7 +166,7 @@ def update_slide_ppt(slides_content, file_path, auto, hasPicture, template_choic
     elif template_choice == 'dark_blue':
         update_dark_blue(prs, file_path, auto, hasPicture, slides_content[0], num)
     else:
-        update_bright_modern(prs, file_path, auto, hasPicture, slides_content[0], num)
+        update_minimal_darkgreen(prs, file_path, auto, hasPicture, slides_content[0], num)
 
     prs.save(os.path.join('generated', 'generated_presentation.pptx'))
 

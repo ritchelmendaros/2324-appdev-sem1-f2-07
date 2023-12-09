@@ -430,7 +430,7 @@ def save_slides_as_images(pptx_path, output_folder):
 #
 #
 #     return render_template('test.html')
-
+#test
 # def save_slides_as_images(input_pptx_path, output_folder):
 #     pres = slides.Presentation(input_pptx_path)
 #
@@ -537,6 +537,6 @@ def save_to_firebase_storage(local_filename, title, username):
 
 
 # try push
-
+# trial
 if __name__ == '__main__':
     app.run(debug=True)

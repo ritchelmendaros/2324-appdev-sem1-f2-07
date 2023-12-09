@@ -2,7 +2,7 @@ import math
 import os
 from utils.template_simple import simple, update_simple
 from utils.template_dark_modern import dark_modern, update_dark_modern
-from utils.template_dark_blue import dark_blue, update_dark_blue
+from utils.template_minimal_blue import minimal_blue, update_minimal_blue
 from utils.template_minimal_darkgreen import minimal_darkgreen, update_minimal_darkgreen
 from pptx import Presentation
 from pptx.dml.color import RGBColor
@@ -113,13 +113,18 @@ def create_ppt(slides_content, template_choice, presentation_title, presenter_na
                 run.font.color.rgb = RGBColor(255, 255, 255)  # RGB for orange color
         dark_modern(prs, slides_content)
 
-    elif template_choice == 'dark_blue':
+    elif template_choice == 'minimal_blue':
         for paragraph in title.text_frame.paragraphs:
             for run in paragraph.runs:
-                run.font.name = 'Corbel(Headings)'
-                run.font.size = Pt(115)
+                run.font.name = 'Roboto Slab'
+                run.font.size = Pt(90)
                 run.font.color.rgb = RGBColor(255, 255, 255)
-        dark_blue(prs, slides_content)
+        for paragraph in subtitle.text_frame.paragraphs:
+            for run in paragraph.runs:
+                run.font.name = 'Roboto Slab'
+                run.font.size = Pt(40)
+                run.font.color.rgb = RGBColor(139, 195, 74)
+        minimal_blue(prs, slides_content)
 
     elif template_choice == 'minimal_darkgreen':
         for paragraph in title.text_frame.paragraphs:
@@ -164,7 +169,7 @@ def update_slide_ppt(slides_content, file_path, auto, hasPicture, template_choic
     elif template_choice == 'dark_modern':
         update_dark_modern(prs, file_path, auto, hasPicture, slides_content[0], num)
     elif template_choice == 'dark_blue':
-        update_dark_blue(prs, file_path, auto, hasPicture, slides_content[0], num)
+        update_minimal_blue(prs, file_path, auto, hasPicture, slides_content[0], num)
     else:
         update_minimal_darkgreen(prs, file_path, auto, hasPicture, slides_content[0], num)
 

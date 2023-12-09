@@ -39,7 +39,7 @@ firebase_config = {
 }
 
 # OpenAI API key
-openai.api_key = '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'
+openai.api_key = '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'
 
 # Your Firebase configuration
 cred = credentials.Certificate("D:\RitchelMendaros\PyCharm_Projects\smartsync-ade70-firebase-adminsdk-l2ti0-1ea8a94791.json")
@@ -220,8 +220,8 @@ def generate_presentation():
                 template_choice = "dark_modern"
             elif template_choice == "minimal_darkgreen":
                 template_choice = "minimal_darkgreen"
-            elif template_choice == "darkblue":
-                template_choice = "dark_blue"
+            elif template_choice == "minimal_blue":
+                template_choice = "minimal_blue"
 
             assistant_response = chat_development(content)
             session['assistant_response'] = assistant_response
@@ -279,6 +279,7 @@ def generate_presentation():
             template_choice = session.get('template')
             update_slide_ppt(slides_content, file_path, is_auto_generated, hasPicture, template_choice, slideNum)
             return render_template('GeneratePresentation.html')
+
 
 def slideshow(images_folder, topic):
     # Get the list of image files in the static folder

@@ -6,7 +6,7 @@ from pptx.util import Inches
 from utils.tools import slide_format,search_pexels_images
 
 
-def dark_blue(prs, slides_content):
+def minimal_blue(prs, slides_content):
     numslides = len(slides_content)
     divided = (numslides - 1) / 4
 
@@ -17,7 +17,7 @@ def dark_blue(prs, slides_content):
     count = 1
     for slide_content in slides_content:
         if count < first:
-            slide = prs.slides.add_slide(prs.slide_layouts[6])
+            slide = prs.slides.add_slide(prs.slide_layouts[10])
             file_path = os.path.join('static', 'pictures', '4.png')
             # image_url = search_pexels_images(slide_content['title'])
             # if image_url:
@@ -34,11 +34,11 @@ def dark_blue(prs, slides_content):
             content_frame = content_box.text_frame
             title_frame = title_box.text_frame
 
-            slide_format(title_frame, 80, 'Arial', 255, 20, 147, 1, 0)
-            slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 20)
+            slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
+            slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 20)
 
         elif count < second and count >= first:
-            slide = prs.slides.add_slide(prs.slide_layouts[6])
+            slide = prs.slides.add_slide(prs.slide_layouts[10])
             file_path = os.path.join('static', 'pictures', '4.png')
             # image_url = search_pexels_images(slide_content['title'])
             # if image_url:
@@ -55,11 +55,11 @@ def dark_blue(prs, slides_content):
             content_frame = content_box.text_frame
             title_frame = title_box.text_frame
 
-            slide_format(title_frame, 80, 'Arial', 255, 20, 147, 0, 0)
-            slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 20)
+            slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
+            slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 20)
 
         elif count < third and count >= second:
-            slide = prs.slides.add_slide(prs.slide_layouts[6])
+            slide = prs.slides.add_slide(prs.slide_layouts[10])
             title_box = slide.shapes.add_textbox(Inches(1.15), Inches(1), Inches(17.55), Inches(1.8))
             content_box = slide.shapes.add_textbox(Inches(1.15), Inches(3), Inches(17.55), Inches(7.1))
             title_box.text = slide_content['title']
@@ -69,11 +69,11 @@ def dark_blue(prs, slides_content):
             content_frame = content_box.text_frame
             title_frame = title_box.text_frame
 
-            slide_format(title_frame, 80, 'Arial', 255, 20, 147, 0, 0)
-            slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 25)
+            slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
+            slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 25)
 
         else:
-            slide = prs.slides.add_slide(prs.slide_layouts[6])
+            slide = prs.slides.add_slide(prs.slide_layouts[10])
             file_path = os.path.join('static', 'pictures', '4.png')
             # image_url = search_pexels_images(slide_content['title'])
             # if image_url:
@@ -90,12 +90,13 @@ def dark_blue(prs, slides_content):
             content_frame = content_box.text_frame
             title_frame = title_box.text_frame
 
-            slide_format(title_frame, 80, 'Arial', 255, 20, 147, 0, 0)
-            slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 16)
+            slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
+            slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 16)
 
         count += 1
 
-def update_dark_blue(prs, file_path, auto, hasPicture, slide_content, slideNum):
+
+def update_minimal_blue(prs, file_path, auto, hasPicture, slide_content, slideNum):
     numslides = len(prs.slides)
     divided = (numslides - 1) / 4
 
@@ -123,8 +124,8 @@ def update_dark_blue(prs, file_path, auto, hasPicture, slide_content, slideNum):
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        slide_format(title_frame, 80, 'Arial', 255, 20, 147, 1, 0)
-        slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 20)
+        slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
+        slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 20)
 
     elif slideNum < second and slideNum >= first:
         slide = prs.slides[slideNum]
@@ -146,8 +147,8 @@ def update_dark_blue(prs, file_path, auto, hasPicture, slide_content, slideNum):
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        slide_format(title_frame, 80, 'Arial', 255, 20, 147, 0, 0)
-        slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 20)
+        slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
+        slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 20)
 
     elif slideNum < third and slideNum >= second:
         slide = prs.slides[slideNum]
@@ -160,8 +161,8 @@ def update_dark_blue(prs, file_path, auto, hasPicture, slide_content, slideNum):
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        slide_format(title_frame, 80, 'Arial', 255, 20, 147, 0, 0)
-        slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 25)
+        slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
+        slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 25)
 
     else:
         slide = prs.slides[slideNum]
@@ -186,6 +187,6 @@ def update_dark_blue(prs, file_path, auto, hasPicture, slide_content, slideNum):
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        slide_format(title_frame, 80, 'Arial', 255, 20, 147, 0, 0)
-        slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 16)
+        slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
+        slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 16)
 

@@ -122,6 +122,11 @@ html, body {
 
 }
 
+
+.button-container {
+    display: flex;
+}
+
 input{
     width: 400px;
     height: 35px;
@@ -142,7 +147,7 @@ textarea{
     font-family: 'Roboto Condensed';
     font-size: 16px;
     text-indent: 5px;
-    margin-top: 20px;;
+    margin-top: 10px;;
     margin-bottom: 7px;
     background-color: #dce0fc;
     border-width: 0;
@@ -162,11 +167,23 @@ textarea::-webkit-scrollbar {
     font-family: 'Roboto Condensed';
     font-size: 18px;
     margin-top: 20px;
+    margin-bottom: 20px;
     border-radius: 25px;
     margin-left: 80px;
     border-width: 0;
     background-color: #121830;
     color: white;
+
+}
+
+.container-inputs input[type="file"] {
+    width: 250px;
+    height: 40px;
+    font-family: 'Roboto Condensed';
+    font-size: 15px;
+    margin-top: 0px;
+    margin-right: 5px;
+    color: #dce0fc;
 
 }
 .generate-container-presentation button, .view-container-presentation button{
@@ -181,9 +198,7 @@ textarea::-webkit-scrollbar {
     background-color: #121830;
     color: white;
 }
-.edit input[type="file"]{
-    width: 350px;
-}
+
 /*for checkboxes*/
 .checkbox-container label {
     font-family: 'Roboto Condensed';
@@ -194,10 +209,57 @@ textarea::-webkit-scrollbar {
     margin-top: 10px;
     white-space: nowrap;
 }
+
 .checkbox-container {
     display: flex;
-    gap: 10px;
+    gap: 10px; /* Adjust the gap between checkboxes */
+    width: 500px;
+}
+
+.checkbox-container1 {
+    display: flex;
+    gap: 10px; /* Adjust the gap between checkboxes */
+    width: 275px;
+}
+.checkbox-container1 label {
+    font-family: 'Roboto Condensed';
+    font-size: 16px;
+    text-indent: 5px;
+    font-weight: 500;
+    color: #121830;
+    margin-top: 10px;
+    white-space: nowrap;
+}
+
+
+.checkbox-container1 input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+}
+
+input::file-selector-button {
+  color: white;
+  border-radius: 7px;
+  background-color: #121830;
+  font-family: 'Roboto Condensed';
+  font-size: 16px;
+  text-indent: 5px;
+}
+
+
+select {
     width: 400px;
+    height: 40px;
+    background-color: #dce0fc;
+    border-radius: 10px;
+    font-family: 'Roboto Condensed';
+    font-size: 16px;
+    border-style: none;
+    text-indent: 5px;
+    margin-top: 10px;;
+    margin-bottom: 10px;
+    padding: 1px;
 }
 
 .checkbox-container input[type="checkbox"] {
@@ -206,6 +268,27 @@ textarea::-webkit-scrollbar {
     margin-top: 10px;
 }
 
+.checkbox-container1 {
+    display: flex;
+    gap: 10px; /* Adjust the gap between checkboxes */
+    width: 275px;
+}
+.checkbox-container1 label {
+    font-family: 'Roboto Condensed';
+    font-size: 16px;
+    text-indent: 5px;
+    font-weight: 500;
+    color: #121830;
+    margin-top: 10px;
+    white-space: nowrap;
+}
+
+
+.checkbox-container1 input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+}
 
 * {box-sizing:border-box}
 .mySlides {
@@ -357,3 +440,4 @@ textarea::-webkit-scrollbar {
     .pastPresentations img:hover, .btnCreate {
         transform: scale(1.05); /* Scale the image on hover */
     }
+

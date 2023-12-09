@@ -57,13 +57,13 @@
                     <label>Choose template</label><br>
                     <div class="checkbox-container">
                         <select name="templates" id="template">
-                          <option value="simple">Simple</option>
-                          <option value="minimal_darkgreen">Minimal - Dark Green</option>
-                          <option value="dark_modern">Minimal - Dark Modern</option>
-                          <option value="minimal_blue">Minimal - Blue</option>
+                            <option value="minimal_blue">Minimal - Blue</option>
+                            <option value="minimal_darkgreen">Minimal - Dark Green</option>
+                            <option value="dark_modern">Minimal - Dark Modern</option>
+                            <option value="simple">Simple</option>
                         </select>
                     </div>
-                    <input type="submit" value="Generate Presentation" onclick="toggleDiv()">
+                    <button value="Generate Presentation" onclick="toggleDiv()">Generate Presentation</button>
                 </form>
                 <div class="edit" id="myDiv" style="display: none">
                         <form action="/GeneratePresentation" method="post" enctype="multipart/form-data">
@@ -72,12 +72,13 @@
                             <input type="text" id="slideNum" name="slide_num" placeholder="Enter Slide Number" required></label>
                             <label>Instruction
                                 <textarea type="textarea" id="instructions" name="instruction" rows="6" cols="43" placeholder="Enter Instruction" required></textarea></label>
-                            <div class="checkbox-container">
+                            <div class="checkbox-container1">
                                 <input type="checkbox" id="auto" name="isAuto" value="auto">
                                 <label for="auto">Auto Generated</label>
                                 <input type="file" id="myFile" name="filename"></div>
-                            <input type="submit" value="Revert">
-                            <input type="submit" value="Done">
+                                <div class="button-container">
+                                    <button>Revert</button> <button>Done</button>
+                                </div>
                         </form>
                     </div>
             </div>

@@ -126,7 +126,7 @@ def update_dark_modern(prs, file_path, auto, hasPicture, slide_content, slideNum
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        slide_format(title_frame, 50, 'Montserrat', 114, 222, 173, 1, 0)
+        slide_format(title_frame, 50, 'Montserrat', 114, 222, 173, 0, 0)
         slide_format(content_frame, 32, 'Lato', 255, 255, 255, 0, 16)
 
     elif slideNum < second and slideNum >= first:

@@ -103,12 +103,12 @@ def create_ppt(slides_content, template_choice, presentation_title, presenter_na
     elif template_choice == 'dark_modern':
         for paragraph in title.text_frame.paragraphs:
             for run in paragraph.runs:
-                run.font.name = 'Cascadia Mono'
+                run.font.name = 'Montserrat'
                 run.font.size = Pt(115)
                 run.font.color.rgb = RGBColor(114, 222, 173)  # RGB for orange color
         for paragraph in subtitle.text_frame.paragraphs:
             for run in paragraph.runs:
-                run.font.name = 'Cascadia Mono'
+                run.font.name = 'Montserrat'
                 run.font.size = Pt(40)
                 run.font.color.rgb = RGBColor(255, 255, 255)  # RGB for orange color
         dark_modern(prs, slides_content)

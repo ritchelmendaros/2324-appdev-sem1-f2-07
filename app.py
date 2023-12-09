@@ -42,7 +42,7 @@ firebase_config = {
 }
 
 # OpenAI API key
-openai.api_key = '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'
+openai.api_key = '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'
 
 # Your Firebase configuration
 cred = credentials.Certificate(r"C:\Users\HP\PycharmProjects\smartsync-ade70-firebase-adminsdk-l2ti0-1ea8a94791.json")

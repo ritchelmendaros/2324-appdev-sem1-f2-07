@@ -14,7 +14,8 @@ from pptx.dml.color import RGBColor
 from werkzeug.utils import secure_filename
 import aspose.slides as slides
 import aspose.pydrawing as drawing
-
+from spire.presentation.common import *
+from spire.presentation import *
 
 app: Flask = Flask(__name__)
 app.config['PERMANENT_SESSION_LIFETIME'] = 3600
@@ -238,14 +239,11 @@ def generate_presentation():
                 ppt_path = os.path.join(os.path.abspath('generated'), 'generated_presentation.pptx')
 
                 # Convert the PowerPoint presentation to images
-                images_folder = os.path.join('generated', 'slides')
+                images_folder = os.path.join('static', topic)
                 os.makedirs(images_folder, exist_ok=True)
-                # image_paths = convert_ppt_to_images(ppt_path, images_folder)
-                # image_paths = save_slides_as_images(ppt_path, images_folder)
-                images_folder = os.path.join('generated', 'ppt_test')
-                os.makedirs(images_folder, exist_ok=True)
-                conversion_id = save_slides_as_images(ppt_path, images_folder)
-                return render_template('GeneratePresentation.html', conversion_id=conversion_id)
+                image_paths = convert_ppt_to_images(ppt_path, images_folder, topic)
+                image_files = slideshow(images_folder, topic)
+                return render_template('GeneratePresentation.html', image_files=image_files)
             except Exception as e:
                 flash(f'Error: {e}', 'error')
                 return render_template('GeneratePresentation.html')
@@ -289,6 +287,17 @@ def generate_presentation():
             update_slide_ppt(slides_content, file_path, is_auto_generated, hasPicture, template_choice, slideNum)
             return render_template('GeneratePresentation.html')
 
+def slideshow(images_folder, topic):
+    # Get the list of image files in the static folder
+    print("imgf:" + images_folder)
+    image_files = [f"static/{topic}/{file}" for file in os.listdir(f"static/{topic}") if file.endswith('.png')]
+
+    # Sort the images based on their filenames
+    image_files.sort()
+
+    # Render the template with the list of image files
+    return image_files
+
 
 conversion_counter = 0
 def save_slides_as_images(pptx_path, output_folder):
@@ -318,136 +327,6 @@ def save_slides_as_images(pptx_path, output_folder):
     return [f"slide_{index}.png" for index in range(len(pres.slides))], conversion_id
 
 
-# @app.route('/Test', methods=['POST'])
-# def test():
-#     if request.method == 'POST':
-#         action = request.form.get('action')
-#
-#         if action == 'action1':
-#             content = request.form.get('contents')
-#             template_choice = request.form.get('templates')
-#             print(template_choice)
-#             topic = request.form.get('title')
-#             presentor = request.form.get('presentation-presentor')
-#             if template_choice == "modern":
-#                 template_choice = "dark_modern"
-#             elif template_choice == "bright":
-#                 template_choice = "bright_modern"
-#             elif template_choice == "darkblue":
-#                 template_choice = "dark_blue"
-#             else:
-#                 template_choice = template_choice
-#             assistant_response = chat_development(content)
-#             session['assistant_response'] = assistant_response
-#             session['template'] = template_choice
-#             print(assistant_response)
-#             slides_content = parse_response(assistant_response)
-#             print(slides_content)
-#
-#             try:
-#                 ppt_filename = create_ppt(slides_content, template_choice, topic, presentor)
-#                 ppt_path = os.path.join(os.path.abspath('generated'), 'generated_presentation.pptx')
-#
-#                 # Convert the PowerPoint presentation to images
-#                 images_folder = os.path.join('generated', 'slides')
-#                 os.makedirs(images_folder, exist_ok=True)
-#                 image_paths = convert_ppt_to_images(ppt_path, images_folder)
-#                 # image_paths = save_slides_as_images(ppt_path, images_folder)
-#                 return render_template('test.html', image_paths=image_paths)
-#             except Exception as e:
-#                 flash(f'Error: {e}', 'error')
-#                 return render_template('test.html')
-#         elif action == 'action2':
-#             slideNum = request.form.get('slide_num')
-#             instruction = request.form.get('instruction')
-#             # template = request.form.get('instruction')
-#             is_auto_generated = 'isAuto' in request.form
-#             print(slideNum)
-#             print(instruction)
-#             print(is_auto_generated)
-#             file_path = ""
-#             if not is_auto_generated:
-#                 if 'filename' not in request.files:
-#                     return "No file part"
-#
-#                 uploaded_file = request.files['filename']
-#
-#                 # If the user does not select a file, the browser submits an empty file without a filename
-#                 if uploaded_file.filename == '':
-#                     return "No selected file"
-#
-#                 # Save the file to a location (replace 'uploads' with your desired directory)
-#                 upload_folder = 'uploads'
-#                 if not os.path.exists(upload_folder):
-#                     os.makedirs(upload_folder)
-#
-#                 file_path = os.path.join(upload_folder, uploaded_file.filename)
-#                 uploaded_file.save(file_path)
-#             slide_content_from_session = session.get('assistant_response')
-#             assistant_response = slide_chat_development(slide_content_from_session, instruction, slideNum)
-#             print(assistant_response)
-#             slides_content = parse_response(assistant_response)
-#             print(slides_content)
-#             template_choice = session.get('template')
-#             update_slide_ppt(slides_content, file_path, is_auto_generated, template_choice, slideNum)
-#             return render_template('test.html')
-
-# @app.route('/updateSlide', methods=['POST'])
-# def update_slide():
-#     if request.method == 'POST':
-#         slideNum = request.form.get('slide_num')
-#         instruction = request.form.get('instruction')
-#         # template = request.form.get('instruction')
-#         is_auto_generated = 'isAuto' in request.form
-#         print(slideNum)
-#         print(instruction)
-#         print(is_auto_generated)
-#         file_path = ""
-#         if not is_auto_generated:
-#             if 'filename' not in request.files:
-#                 return "No file part"
-#
-#             uploaded_file = request.files['filename']
-#
-#             # If the user does not select a file, the browser submits an empty file without a filename
-#             if uploaded_file.filename == '':
-#                 return "No selected file"
-#
-#             # Save the file to a location (replace 'uploads' with your desired directory)
-#             upload_folder = 'uploads'
-#             if not os.path.exists(upload_folder):
-#                 os.makedirs(upload_folder)
-#
-#             file_path = os.path.join(upload_folder, uploaded_file.filename)
-#             uploaded_file.save(file_path)
-#         slide_content_from_session = session.get('assistant_response')
-#         assistant_response = slide_chat_development(slide_content_from_session, instruction, slideNum)
-#         print(assistant_response)
-#         slides_content = parse_response(assistant_response)
-#         print(slides_content)
-#         template_choice = session.get('template')
-#         update_slide_ppt(slides_content, file_path, is_auto_generated, template_choice, slideNum)
-#
-#
-#     return render_template('test.html')
-#test
-# def save_slides_as_images(input_pptx_path, output_folder):
-#     pres = slides.Presentation(input_pptx_path)
-#
-#     # Create output folder if it doesn't exist
-#     os.makedirs(output_folder, exist_ok=True)
-#
-#     # Loop through slides
-#     for index, slide in enumerate(pres.slides):
-#         # Define custom size
-#         size = drawing.Size(1080, 720)
-#
-#         # Save as PNG
-#         image_path = os.path.join(output_folder, f"slide_{index}.png")
-#         slide.get_thumbnail(size).save(image_path, drawing.imaging.ImageFormat.png)
-#
-#     return [f"slide_{index}.png" for index in range(pres.slides.length)]
-
 @app.route('/')
 def save_and_display_slides(pptx_path, output_folder):
     image_paths = save_slides_as_images(pptx_path, output_folder)
@@ -464,39 +343,29 @@ def serve_slide_image(slide_number):
         os.abort(404)
 
 
-def convert_ppt_to_images(ppt_path, images_folder):
-    prs = Presentation(ppt_path)
+def convert_ppt_to_images(ppt_path, output_folder, topic):
+    presentation = Presentation()
+    print(output_folder)
+    try:
+        # Load the PowerPoint presentation
+        presentation.LoadFromFile(ppt_path)
 
-    image_paths = []
+        # Loop through the slides in the presentation
+        image_paths = []
+        for i, slide in enumerate(presentation.Slides):
+            # Specify the output file name
+            file_name = f"{output_folder}/{topic}_slide_{i + 1}.png"
+            # Save each slide as a PNG image
+            image = slide.SaveAsImage()
+            image.Save(file_name)
+            image_paths.append(file_name)
+            image.Dispose()
+        print("success")
+        return image_paths
 
-    for slide_number, slide in enumerate(prs.slides, start=1):
-        # Create a new presentation with one slide
-        new_prs = Presentation()
-        new_slide = new_prs.slides.add_slide(new_prs.slide_layouts[5])  # Using a blank slide layout
-
-        # Copy the shapes from the original slide to the new slide
-        for shape in slide.shapes:
-            if shape.has_text_frame:
-                if hasattr(shape,
-                           'text_frame') and shape.text_frame.text.strip():  # Check if the shape has non-empty text
-                    new_shape = new_slide.shapes.add_textbox(
-                        left=shape.left, top=shape.top, width=shape.width, height=shape.height
-                    )
-                    new_shape.text_frame.text = shape.text
-
-                    # Access the font attribute through the text_frame property if available
-                    if hasattr(new_shape.text_frame, 'text_frame') and hasattr(new_shape.text_frame.text_frame,
-                                                                               'paragraphs') \
-                            and new_shape.text_frame.text_frame.paragraphs:
-                        new_shape.text_frame.text_frame.paragraphs[0].font.color.rgb = RGBColor(0, 0,
-                                                                                                0)  # Set font color to black
-
-        # Save the new presentation as an image
-        image_path = os.path.join(images_folder, f"slide_{slide_number}.png")
-        image_paths.append(image_path)
-        new_prs.save(image_path)
-
-    return image_paths
+    finally:
+        # Dispose of the presentation object
+        presentation.Dispose()
 
 
 @app.route('/logout')

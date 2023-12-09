@@ -4,6 +4,45 @@
         <title>Generate Presentation | SmartSync</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
         {% include 'darkbluelogoheader.html' %}
+        <style>
+        .slideshow-container {
+            max-width: 880px;
+            max-height: 580px;
+            position: relative;
+            margin: auto;
+        }
+
+        .mySlides {
+            display: none;
+        }
+
+        .img {
+            width: 100%;
+        }
+
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    </style>
     </head>
     <body>
         <div class="container-inputs" >
@@ -18,14 +57,6 @@
                     <textarea type="textarea" id="keypoints" name="contents" rows="8" cols="43" placeholder="Input content" autocomplete="off" required></textarea><br>
                     <label>Choose template</label><br>
                     <div class="checkbox-container">
-<!--                        <input type="checkbox" id="simple" name="template" value="simple" onclick="handleCheckboxClick('simple')">-->
-<!--                        <label for="simple">Simple</label>-->
-<!--                        <input type="checkbox" id="bright" name="template" value="bright" onclick="handleCheckboxClick('bright')">-->
-<!--                        <label for="bright">Bright Modern</label>-->
-<!--                        <input type="checkbox" id="modern" name="template" value="modern" onclick="handleCheckboxClick('modern')">-->
-<!--                        <label for="modern">Dark Modern</label><br>-->
-<!--                        <input type="checkbox" id="darkblue" name="template" value="darkblue" onclick="handleCheckboxClick('darkblue')">-->
-<!--                        <label for="darkblue">Dark Blue</label>-->
                         <select name="templates" id="template">
                           <option value="simple">Simple</option>
                           <option value="bright_modern">Bright Modern</option>
@@ -46,7 +77,6 @@
                                 <input type="checkbox" id="auto" name="isAuto" value="auto">
                                 <label for="auto">Auto Generated</label>
                                 <input type="file" id="myFile" name="filename"></div>
-<!--                            <input type="submit" value="Upload">-->
                             <input type="submit" value="Revert">
                             <input type="submit" value="Done">
                         </form>
@@ -55,25 +85,57 @@
         </div>
         <div class="generate-container-presentation">
             <div class="generated-content">
-                <iframe src="{{ url_for('static', filename=pdf_path) }}" width="100%" height="450px"></iframe>
+                <div class="slideshow-container">
+                    {% for image_file in image_files %}
+                        <div class="mySlides">
+                            <img class="img" src="{{ image_file }}" alt="Slide {{ loop.index }}">
+                        </div>
+                    {% endfor %}
+
+                        <a class="prev" onclick="plusSlides(-1)">&#10094; Previous</a>
+                        <a class="next" onclick="plusSlides(1)">Next &#10095;</a>
+
+                        <script>
+                            slideIndex = 0;
+                            showSlides();
+
+                            function showSlides() {
+                                var slides = document.getElementsByClassName("mySlides");
+                                for (var i = 0; i < slides.length; i++) {
+                                    slides[i].style.display = "none";
+                                }
+                                slides[slideIndex].style.display = "block";
+                            }
+
+                            function plusSlides(n) {
+                                slideIndex += n;
+                                var slides = document.getElementsByClassName("mySlides");
+                                if (slideIndex >= slides.length) {
+                                    slideIndex = 0;
+                                } else if (slideIndex < 0) {
+                                    slideIndex = slides.length - 1;
+                                }
+                                showSlides();
+                            }
+                        </script>
+                    </div>
             </div>
             <button onclick="downloadPresentation()" >Download Presentation</button>
         </div>
 
     <script>
-     function toggleDiv() {
-      var div = document.getElementById('myDiv');
-      var divv = document.getElementById('myDivv');
-      div.style.display = block;
-      divv.style.display = none;
-    }
+
+        function downloadPresentation() {
+            // redirect to the /download route
+            window.location.href = '{{ url_for('download_file', filename='generated_presentation.pptx') }}';
+        }
+        // Inside the generatePresentation function
         function generatePresentation() {
             // Get the form and serialize its data
             var form = document.getElementById('presentationForm');
             var formData = new FormData(form);
-
             // Make a POST request to the server
-            fetch('{{ url_for('generate_presentation') }}', {
+            fetch('/GeneratePresentation', {
                 method: 'POST',
                 body: formData
             })
@@ -81,7 +143,7 @@
             .then(data => {
                 // Display the generated presentation content
                 if (data.status === 'success') {
-                    displayGeneratedPresentation(data.path);
+                    displaySlideshow(data.imagePaths);  // Use the provided image URLs
                     document.getElementById('presentationContent').innerHTML = `Presentation successfully generated! <br>Path: ${data.path}`;
                 } else {
                     document.getElementById('presentationContent').innerHTML = 'Failed to generate presentation';
@@ -90,35 +152,6 @@
             .catch(error => {
                 console.error('Error:', error);
             });
-        }
-        function downloadPresentation() {
-            // redirect to the /download route
-            window.location.href = '{{ url_for('download_file', filename='generated_presentation.pptx') }}';
-        }
-        function displaySlideshow(imageUrls) {
-            // Initialize Swiper
-            var swiper = new Swiper('.swiper-container', {
-                slidesPerView: 1,
-                spaceBetween: 10,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-            });
-
-            // Dynamically add slides to Swiper
-            var swiperWrapper = document.getElementById('swiperWrapper');
-            swiperWrapper.innerHTML = '';
-            imageUrls.forEach(function (imageUrl) {
-                var slide = document.createElement('div');
-                slide.className = 'swiper-slide';
-                slide.innerHTML = '<img src="' + imageUrl + '" alt="Slide">';
-                swiperWrapper.appendChild(slide);
-            });
-        }
-        function displayGeneratedPresentation(presentationPath) {
-            var iframe = document.getElementById('presentationIframe');
-            iframe.src = presentationPath;
         }
     </script>
     </body>

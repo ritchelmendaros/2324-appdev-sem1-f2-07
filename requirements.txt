@@ -7,7 +7,7 @@ Flask-Login
 python-dotenv
 reportlab
 Aspose.slides
-
+spire.presentation
 
 
 

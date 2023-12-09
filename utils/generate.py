@@ -179,36 +179,16 @@ def create_ppt(slides_content, template_choice, presentation_title, presenter_na
     prs.save(os.path.join('generated', 'generated_presentation.pptx'))
 
 
-# openai image generation using dall-e 3
-def generate_openai_image(prompt, model="dall-e-3", n=1, size="1024x1024", response_format="url", quality="standard",
-                          style="vivid"):
-
-    OPEN_API_KEY = "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"
-    OPENAI_API_URL = "https://api.openai.com/v1/images/generations"
-
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {OPEN_API_KEY}',
-    }
-
-    data = {
-        "model": model,
-        "prompt": prompt,
-        "n": n,
-        "size": size,
-        "response_format": response_format,
-        "quality": quality,
-        "style": style,
-    }
-
-    response = requests.post(OPENAI_API_URL, headers=headers, json=data)
-
-    if response.status_code == 200:
-        result = response.json()
-        return result['data'][0]['url'] if response_format == 'url' else result['data'][0]
-    else:
-        print(f"Error: {response.status_code}")
-        return None
+def slide_format(content_frame, font_size, font, r, g, b, align, space):
+    for paragraph in content_frame.paragraphs:
+        paragraph.font.size = Pt(font_size)
+        paragraph.font.name = font
+        paragraph.font.color.rgb = RGBColor(r,g,b)
+        if align == 0:
+            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
+        else:
+            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.RIGHT
+        paragraph.space_after = Pt(space)
 
 
 # image generation using openai
@@ -223,26 +203,17 @@ def content_structure_1(prs, slide_content, template_choice):
         #     image_data = BytesIO(response.content)
         slide.shapes.add_picture(file_path, Inches(1.28), Inches(1.33), Inches(7.90), Inches(4.52))
         title_box = slide.shapes.add_textbox(Inches(1.28), Inches(5.95), Inches(7.81), Inches(4.1))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(9.76), Inches(1.33), Inches(8.92), Inches(8.7))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(50)
-            paragraph.font.name = 'Gill Sans MT'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Segoe UI Semibold'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(16)
+        slide_format(title_frame, 50, 'Gill Sans MT', 5, 14, 56, 0, 0)
+        slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 16)
+
 
     elif template_choice == 'dark_modern':
         slide = prs.slides.add_slide(prs.slide_layouts[3])
@@ -253,29 +224,18 @@ def content_structure_1(prs, slide_content, template_choice):
         #     response = requests.get(image_url)
         #     image_data = BytesIO(response.content)
         slide.shapes.add_picture(file_path, 0, 0, Inches(20), Inches(4.95669291))
-
         title_box = slide.shapes.add_textbox(Inches(0.4173228), Inches(5.3543307), Inches(5.8346457), Inches(5.3543307))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(6.5), Inches(5.3543307), Inches(13.08), Inches(5))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(72)
-            paragraph.font.color.rgb = RGBColor(255, 165, 0)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.RIGHT
+        slide_format(title_frame, 72, 'Times New Roman', 255, 165, 0, 1, 0)
+        slide_format(content_frame, 36, 'Times New Roman', 255, 255, 255, 0, 16)
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(36)
-            paragraph.font.color.rgb = RGBColor(255, 255, 255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(16)
 
     elif template_choice == 'dark_blue':
         slide = prs.slides.add_slide(prs.slide_layouts[6])
@@ -287,26 +247,16 @@ def content_structure_1(prs, slide_content, template_choice):
         #     image_data = BytesIO(response.content)
         slide.shapes.add_picture(file_path, Inches(1.28), Inches(1.33), Inches(7.90), Inches(4.52))
         title_box = slide.shapes.add_textbox(Inches(1.28), Inches(5.95), Inches(7.81), Inches(4.1))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(9.76), Inches(1.33), Inches(8.92), Inches(8.7))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(80)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255,255,255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(20)
+        slide_format(title_frame, 80, 'Arial', 255, 20, 147, 1, 0)
+        slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 20)
 
     elif template_choice == 'bright_modern':
         slide = prs.slides.add_slide(prs.slide_layouts[6])
@@ -317,32 +267,19 @@ def content_structure_1(prs, slide_content, template_choice):
         #     response = requests.get(image_url)
         #     image_data = BytesIO(response.content)
         slide.shapes.add_picture(file_path, 0, 0, Inches(20), Inches(4.95669291))
-
         title_box = slide.shapes.add_textbox(Inches(0.4173228), Inches(5.3543307), Inches(5.8346457), Inches(5.3543307))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(6.5), Inches(5.3543307), Inches(13.08), Inches(5))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(72)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.RIGHT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(0, 0, 0)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(16)
+        slide_format(title_frame, 72, 'Arial', 255, 20, 147, 1, 0)
+        slide_format(content_frame, 32, 'Arial', 0, 0, 0, 0, 16)
 
 
-
-# image generation using openai
 def content_structure_2(prs, slide_content, template_choice):
     if template_choice == 'simple':
         slide = prs.slides.add_slide(prs.slide_layouts[6])
@@ -354,26 +291,16 @@ def content_structure_2(prs, slide_content, template_choice):
         #     image_data = BytesIO(response.content)
         slide.shapes.add_picture(file_path, Inches(1.4), Inches(3), Inches(8.48), Inches(7.15))
         title_box = slide.shapes.add_textbox(Inches(1.38), Inches(1.15), Inches(17.22), Inches(1.31))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(10.13), Inches(3), Inches(8.5), Inches(7.1))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(72)
-            paragraph.font.name = 'Gill Sans MT'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Segoe UI Semibold'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(20)
+        slide_format(title_frame, 72, 'Gill Sans MT', 5, 14, 56, 0, 0)
+        slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 20)
 
     elif template_choice == 'dark_modern':
         # image_url = search_pexels_images(slide_content['title'])
@@ -385,29 +312,17 @@ def content_structure_2(prs, slide_content, template_choice):
         #     response = requests.get(image_url)
         #     image_data = BytesIO(response.content)
         slide.shapes.add_picture(file_path, Inches(0.95), Inches(3), Inches(7.15), Inches(7.15))
-
         title_box = slide.shapes.add_textbox(Inches(1.38), Inches(1.15), Inches(17.22), Inches(1.31))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(8.67), Inches(3), Inches(10), Inches(7.1))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(72)
-            paragraph.font.color.rgb = RGBColor(255, 165, 0)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(36)
-            paragraph.font.color.rgb = RGBColor(255, 255, 255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(20)
+        slide_format(title_frame, 72, 'Times New Roman', 255, 165, 0, 0, 0)
+        slide_format(content_frame, 36, 'Times New Roman', 255, 255, 255, 0, 20)
 
     elif template_choice == 'dark_blue':
         slide = prs.slides.add_slide(prs.slide_layouts[6])
@@ -419,26 +334,16 @@ def content_structure_2(prs, slide_content, template_choice):
         #     image_data = BytesIO(response.content)
         slide.shapes.add_picture(file_path, Inches(1.4), Inches(3), Inches(8.48), Inches(7.15))
         title_box = slide.shapes.add_textbox(Inches(1.38), Inches(1.15), Inches(17.22), Inches(1.31))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(10.13), Inches(3), Inches(8.5), Inches(7.1))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(80)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255,255,255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(20)
+        slide_format(title_frame, 80, 'Arial', 255, 20, 147, 0, 0)
+        slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 20)
 
     elif template_choice == 'bright_modern':
         slide = prs.slides.add_slide(prs.slide_layouts[6])
@@ -449,133 +354,75 @@ def content_structure_2(prs, slide_content, template_choice):
         #     response = requests.get(image_url)
         #     image_data = BytesIO(response.content)
         slide.shapes.add_picture(file_path, Inches(0.95), Inches(3), Inches(7.15), Inches(7.15))
-
         title_box = slide.shapes.add_textbox(Inches(1.38), Inches(1.15), Inches(17.22), Inches(1.31))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(8.67), Inches(3), Inches(10), Inches(7.1))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(66)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(0, 0, 0)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(20)
+        slide_format(title_frame, 66, 'Arial', 255, 20, 147, 0, 0)
+        slide_format(content_frame, 32, 'Arial', 0, 0, 0, 0, 20)
 
 
 def content_structure_3(prs, slide_content, template_choice):
     if template_choice == 'simple':
         slide = prs.slides.add_slide(prs.slide_layouts[6])
-
         title_box = slide.shapes.add_textbox(Inches(1.15), Inches(1), Inches(17.55), Inches(1.8))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(1.15), Inches(3), Inches(17.55), Inches(7.1))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(50)
-            paragraph.font.name = 'Gill Sans MT'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Segoe UI Semibold'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(25)
+        slide_format(title_frame, 50, 'Gill Sans MT', 5, 14, 56, 0, 0)
+        slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 25)
 
     elif template_choice == 'dark_modern':
         slide = prs.slides.add_slide(prs.slide_layouts[3])
-
         title_box = slide.shapes.add_textbox(Inches(1), Inches(1.1), Inches(18), Inches(2))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(1), Inches(3.3), Inches(18), Inches(7.1))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(72)
-            paragraph.font.color.rgb = RGBColor(255, 165, 0)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(44)
-            paragraph.font.color.rgb = RGBColor(255, 255, 255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(25)
+        slide_format(title_frame, 72, 'Times New Roman', 255, 165, 0, 0, 0)
+        slide_format(content_frame, 44, 'Times New Roman', 255, 255, 255, 0, 25)
 
     elif template_choice == 'dark_blue':
         slide = prs.slides.add_slide(prs.slide_layouts[6])
-
         title_box = slide.shapes.add_textbox(Inches(1.15), Inches(1), Inches(17.55), Inches(1.8))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(1.15), Inches(3), Inches(17.55), Inches(7.1))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(80)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 255, 255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(25)
+        slide_format(title_frame, 80, 'Arial', 255, 20, 147, 0, 0)
+        slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 25)
 
     elif template_choice == 'bright_modern':
         slide = prs.slides.add_slide(prs.slide_layouts[6])
-
         title_box = slide.shapes.add_textbox(Inches(1), Inches(1.1), Inches(18), Inches(2))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(1), Inches(3.3), Inches(18), Inches(7.1))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(72)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(0, 0, 0)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(25)
-
-
+        slide_format(title_frame, 72, 'Arial', 255, 20, 147, 0, 0)
+        slide_format(content_frame, 32, 'Arial', 0, 0, 0, 0, 25)
 
 
 def content_structure_4(prs, slide_content, template_choice):
@@ -588,28 +435,17 @@ def content_structure_4(prs, slide_content, template_choice):
         #     response = requests.get(image_url)
         #     image_data = BytesIO(response.content)
         slide.shapes.add_picture(file_path, Inches(11), Inches(0.8), Inches(8.24), Inches(9.65))
-
         title_box = slide.shapes.add_textbox(Inches(0.9), Inches(0.9), Inches(9.71), Inches(2.12))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(0.9), Inches(3.38), Inches(9.71), Inches(7))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(66)
-            paragraph.font.name = 'Gill Sans MT'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Segoe UI Semibold'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(16)
+        slide_format(title_frame, 66, 'Gill Sans MT', 5, 14, 56, 0, 0)
+        slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 16)
 
     elif template_choice == 'dark_modern':
         # image_url = search_pexels_images(slide_content['title'])
@@ -621,29 +457,17 @@ def content_structure_4(prs, slide_content, template_choice):
         #     response = requests.get(image_url)
         #     image_data = BytesIO(response.content)
         slide.shapes.add_picture(file_path, Inches(11), Inches(0.8), Inches(8.12), Inches(9.65))
-
         title_box = slide.shapes.add_textbox(Inches(0.9), Inches(0.9), Inches(9.71), Inches(2.12))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(0.9), Inches(3.38), Inches(9.71), Inches(7))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(66)
-            paragraph.font.color.rgb = RGBColor(255, 165, 0)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(32)
-            paragraph.font.color.rgb = RGBColor(255, 255, 255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(20)
+        slide_format(title_frame, 66, 'Times New Roman', 255, 165, 0, 0, 0)
+        slide_format(content_frame, 32, 'Times New Roman', 255, 255, 255, 0, 20)
 
     elif template_choice == 'dark_blue':
         slide = prs.slides.add_slide(prs.slide_layouts[6])
@@ -654,28 +478,17 @@ def content_structure_4(prs, slide_content, template_choice):
         #     response = requests.get(image_url)
         #     image_data = BytesIO(response.content)
         slide.shapes.add_picture(file_path, Inches(11), Inches(0.8), Inches(8.24), Inches(9.65))
-
         title_box = slide.shapes.add_textbox(Inches(0.9), Inches(0.9), Inches(9.71), Inches(2.12))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(0.9), Inches(3.38), Inches(9.71), Inches(7))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(80)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255,255,255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(16)
+        slide_format(title_frame, 80, 'Arial', 255, 20, 147, 0, 0)
+        slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 16)
 
     elif template_choice == 'bright_modern':
         slide = prs.slides.add_slide(prs.slide_layouts[6])
@@ -686,28 +499,17 @@ def content_structure_4(prs, slide_content, template_choice):
         #     response = requests.get(image_url)
         #     image_data = BytesIO(response.content)
         slide.shapes.add_picture(file_path, Inches(11), Inches(0.8), Inches(8.12), Inches(9.65))
-
         title_box = slide.shapes.add_textbox(Inches(0.9), Inches(0.9), Inches(9.71), Inches(2.12))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(0.9), Inches(3.38), Inches(9.71), Inches(7))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(66)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(0, 0, 0)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(20)
+        slide_format(title_frame, 66, 'Arial', 255, 20, 147, 0, 0)
+        slide_format(content_frame, 32, 'Arial', 0, 0, 0, 0, 20)
 
 
 def update_slide_ppt(slides_content, file_path, auto, hasPicture, template_choice, slideNum):
@@ -742,22 +544,19 @@ def update_slide_ppt(slides_content, file_path, auto, hasPicture, template_choic
     prs.save(os.path.join('generated', 'generated_presentation.pptx'))
 
 
-def remove_all_elements(prs,slideNum):
+def remove_all_elements(prs, slideNum):
     # Iterate through each shape on the slide and remove it
     slide = prs.slides[slideNum]
     for shape in slide.shapes:
         shape.element.getparent().remove(shape.element)
 
-    # Clear the notes on the slide
-    # prs.slides.add_slide(slide_layouts[6])
-    # slide.notes_slide.notes_text_frame.clear()
+    slide.notes_slide.notes_text_frame.clear()
 
 
 def update_content_structure_1(prs, file_path, auto, hasPicture, slide_content, template_choice, slideNum):
     if template_choice == 'simple':
         slide = prs.slides[slideNum]
         if auto:
-            print("3")
             image_url = search_pexels_images(slide_content['title'])
             if image_url:
                 # Download the image
@@ -765,34 +564,22 @@ def update_content_structure_1(prs, file_path, auto, hasPicture, slide_content, 
                 image_data = BytesIO(response.content)
                 slide.shapes.add_picture(image_data, Inches(1.28), Inches(1.33), Inches(7.90), Inches(4.52))
         elif hasPicture:
-            print("4")
             slide.shapes.add_picture(file_path, Inches(1.28), Inches(1.33), Inches(7.90), Inches(4.52))
         title_box = slide.shapes.add_textbox(Inches(1.28), Inches(5.95), Inches(7.81), Inches(4.1))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(9.76), Inches(1.33), Inches(8.92), Inches(8.7))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(50)
-            paragraph.font.name = 'Gill Sans MT'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Segoe UI Semibold'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(16)
+        slide_format(title_frame, 50, 'Gill Sans MT', 5, 14, 56, 0, 0)
+        slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 16)
 
     elif template_choice == 'dark_modern':
         slide = prs.slides[slideNum]
         if auto:
-            print("3")
             image_url = search_pexels_images(slide_content['title'])
             if image_url:
                 # Download the image
@@ -800,7 +587,6 @@ def update_content_structure_1(prs, file_path, auto, hasPicture, slide_content, 
                 image_data = BytesIO(response.content)
                 slide.shapes.add_picture(image_data, 0, 0, Inches(20), Inches(4.95669291))
         elif hasPicture:
-            print("4")
             slide.shapes.add_picture(file_path, 0, 0, Inches(20), Inches(4.95669291))
 
         title_box = slide.shapes.add_textbox(Inches(0.4173228), Inches(5.3543307), Inches(5.8346457), Inches(5.3543307))
@@ -812,24 +598,12 @@ def update_content_structure_1(prs, file_path, auto, hasPicture, slide_content, 
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(72)
-            paragraph.font.color.rgb = RGBColor(255, 165, 0)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.RIGHT
-
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(36)
-            paragraph.font.color.rgb = RGBColor(255, 255, 255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(16)
+        slide_format(title_frame, 72, 'Times New Roman', 255, 165, 0, 1, 0)
+        slide_format(content_frame, 36, 'Times New Roman', 255, 255, 255, 0, 16)
 
     elif template_choice == 'dark_blue':
         slide = prs.slides[slideNum]
         if auto:
-            print("3")
             image_url = search_pexels_images(slide_content['title'])
             if image_url:
                 # Download the image
@@ -837,35 +611,23 @@ def update_content_structure_1(prs, file_path, auto, hasPicture, slide_content, 
                 image_data = BytesIO(response.content)
                 slide.shapes.add_picture(image_data, Inches(1.28), Inches(1.33), Inches(7.90), Inches(4.52))
         elif hasPicture:
-            print("4")
             slide.shapes.add_picture(file_path, Inches(1.28), Inches(1.33), Inches(7.90), Inches(4.52))
 
         title_box = slide.shapes.add_textbox(Inches(1.28), Inches(5.95), Inches(7.81), Inches(4.1))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(9.76), Inches(1.33), Inches(8.92), Inches(8.7))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(80)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 255, 255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(20)
+        slide_format(title_frame, 80, 'Arial', 255, 20, 147, 1, 0)
+        slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 20)
 
     elif template_choice == 'bright_modern':
         slide = prs.slides[slideNum]
         if auto:
-            print("3")
             image_url = search_pexels_images(slide_content['title'])
             if image_url:
                 # Download the image
@@ -873,37 +635,25 @@ def update_content_structure_1(prs, file_path, auto, hasPicture, slide_content, 
                 image_data = BytesIO(response.content)
                 slide.shapes.add_picture(image_data,0, 0, Inches(20), Inches(4.95669291))
         elif hasPicture:
-            print("4")
             slide.shapes.add_picture(file_path, 0, 0, Inches(20), Inches(4.95669291))
 
         title_box = slide.shapes.add_textbox(Inches(0.4173228), Inches(5.3543307), Inches(5.8346457), Inches(5.3543307))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(6.5), Inches(5.3543307), Inches(13.08), Inches(5))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(72)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.RIGHT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(0, 0, 0)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(16)
+        slide_format(title_frame, 72, 'Arial', 255, 20, 147, 1, 0)
+        slide_format(content_frame, 32, 'Arial', 0, 0, 0, 0, 16)
 
 
 def update_content_structure_2(prs, file_path, auto, hasPicture, slide_content, template_choice, slideNum):
     if template_choice == 'simple':
         slide = prs.slides[slideNum]
         if auto:
-            print("3")
             image_url = search_pexels_images(slide_content['title'])
             if image_url:
                 # Download the image
@@ -911,7 +661,6 @@ def update_content_structure_2(prs, file_path, auto, hasPicture, slide_content, 
                 image_data = BytesIO(response.content)
                 slide.shapes.add_picture(image_data, Inches(1.4), Inches(3), Inches(8.48), Inches(7.15))
         elif hasPicture:
-            print("4")
             slide.shapes.add_picture(file_path, Inches(1.4), Inches(3), Inches(8.48), Inches(7.15))
         title_box = slide.shapes.add_textbox(Inches(1.38), Inches(1.15), Inches(17.22), Inches(1.31))
         title_box.text = slide_content['title']
@@ -921,23 +670,13 @@ def update_content_structure_2(prs, file_path, auto, hasPicture, slide_content, 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(72)
-            paragraph.font.name = 'Gill Sans MT'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Segoe UI Semibold'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(20)
+        slide_format(title_frame, 72, 'Gill Sans MT', 5, 14, 56, 0, 0)
+        slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 20)
+
     elif template_choice == 'dark_modern':
         slide = prs.slides[slideNum]
         if auto:
-            print("3")
             image_url = search_pexels_images(slide_content['title'])
             if image_url:
                 # Download the image
@@ -945,36 +684,23 @@ def update_content_structure_2(prs, file_path, auto, hasPicture, slide_content, 
                 image_data = BytesIO(response.content)
                 slide.shapes.add_picture(image_data, Inches(0.95), Inches(3), Inches(7.15), Inches(7.15))
         elif hasPicture:
-            print("4")
             slide.shapes.add_picture(file_path, Inches(0.95), Inches(3), Inches(7.15), Inches(7.15))
 
         title_box = slide.shapes.add_textbox(Inches(1.38), Inches(1.15), Inches(17.22), Inches(1.31))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(8.67), Inches(3), Inches(10), Inches(7.1))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(72)
-            paragraph.font.color.rgb = RGBColor(255, 165, 0)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(36)
-            paragraph.font.color.rgb = RGBColor(255, 255, 255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(20)
+        slide_format(title_frame, 72, 'Times New Roman', 255, 165, 0, 0, 0)
+        slide_format(content_frame, 36, 'Times New Roman', 255, 255, 255, 0, 20)
 
     elif template_choice == 'dark_blue':
         slide = prs.slides[slideNum]
         if auto:
-            print("3")
             image_url = search_pexels_images(slide_content['title'])
             if image_url:
                 # Download the image
@@ -982,7 +708,6 @@ def update_content_structure_2(prs, file_path, auto, hasPicture, slide_content, 
                 image_data = BytesIO(response.content)
                 slide.shapes.add_picture(image_data, Inches(1.4), Inches(3), Inches(8.48), Inches(7.15))
         elif hasPicture:
-            print("4")
             slide.shapes.add_picture(file_path, Inches(1.4), Inches(3), Inches(8.48), Inches(7.15))
         title_box = slide.shapes.add_textbox(Inches(1.38), Inches(1.15), Inches(17.22), Inches(1.31))
         title_box.text = slide_content['title']
@@ -992,24 +717,13 @@ def update_content_structure_2(prs, file_path, auto, hasPicture, slide_content, 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(80)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 255, 255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(20)
+        slide_format(title_frame, 80, 'Arial', 255, 20, 147, 0, 0)
+        slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 20)
 
     elif template_choice == 'bright_modern':
         slide = prs.slides[slideNum]
         if auto:
-            print("3")
             image_url = search_pexels_images(slide_content['title'])
             if image_url:
                 # Download the image
@@ -1017,7 +731,6 @@ def update_content_structure_2(prs, file_path, auto, hasPicture, slide_content, 
                 image_data = BytesIO(response.content)
                 slide.shapes.add_picture(image_data, Inches(0.95), Inches(3), Inches(7.15), Inches(7.15))
         elif hasPicture:
-            print("4")
             slide.shapes.add_picture(file_path, Inches(0.95), Inches(3), Inches(7.15), Inches(7.15))
         title_box = slide.shapes.add_textbox(Inches(1.38), Inches(1.15), Inches(17.22), Inches(1.31))
         title_box.text = slide_content['title']
@@ -1027,128 +740,72 @@ def update_content_structure_2(prs, file_path, auto, hasPicture, slide_content, 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(66)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(0, 0, 0)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(20)
+        slide_format(title_frame, 66, 'Arial', 255, 20, 147, 0, 0)
+        slide_format(content_frame, 32, 'Arial', 0, 0, 0, 0, 20)
 
 
 def update_content_structure_3(prs, slide_content, template_choice, slideNum):
     if template_choice == 'simple':
         slide = prs.slides[slideNum]
-
         title_box = slide.shapes.add_textbox(Inches(1.15), Inches(1), Inches(17.55), Inches(1.8))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(1.15), Inches(3), Inches(17.55), Inches(7.1))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(50)
-            paragraph.font.name = 'Gill Sans MT'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Segoe UI Semibold'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(25)
+        slide_format(title_frame, 50, 'Gill Sans MT', 5, 14, 56, 0, 0)
+        slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 25)
 
     elif template_choice == 'dark_modern':
         slide = prs.slides[slideNum]
-
         title_box = slide.shapes.add_textbox(Inches(1), Inches(1.1), Inches(18), Inches(2))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(1), Inches(3.3), Inches(18), Inches(7.1))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(72)
-            paragraph.font.color.rgb = RGBColor(255, 165, 0)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(44)
-            paragraph.font.color.rgb = RGBColor(255, 255, 255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(25)
+        slide_format(title_frame, 72, 'Times New Roman', 255, 165, 0, 0, 0)
+        slide_format(content_frame, 44, 'Times New Roman', 255, 255, 255, 0, 25)
 
     elif template_choice == 'dark_blue':
         slide = prs.slides[slideNum]
-
         title_box = slide.shapes.add_textbox(Inches(1.15), Inches(1), Inches(17.55), Inches(1.8))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(1.15), Inches(3), Inches(17.55), Inches(7.1))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(80)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 255, 255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(25)
+        slide_format(title_frame, 80, 'Arial', 255, 20, 147, 0, 0)
+        slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 25)
 
     elif template_choice == 'bright_modern':
         slide = prs.slides[slideNum]
         title_box = slide.shapes.add_textbox(Inches(1), Inches(1.1), Inches(18), Inches(2))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(1), Inches(3.3), Inches(18), Inches(7.1))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(72)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(0, 0, 0)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(25)
+        slide_format(title_frame, 72, 'Arial', 255, 20, 147, 0, 0)
+        slide_format(content_frame, 32, 'Arial', 0, 0, 0, 0, 25)
 
 
 def update_content_structure_4(prs, file_path, auto, hasPicture, slide_content, template_choice, slideNum):
     if template_choice == 'simple':
         slide = prs.slides[slideNum]
         if auto:
-            print("3")
             image_url = search_pexels_images(slide_content['title'])
             if image_url:
                 # Download the image
@@ -1156,35 +813,24 @@ def update_content_structure_4(prs, file_path, auto, hasPicture, slide_content, 
                 image_data = BytesIO(response.content)
                 slide.shapes.add_picture(image_data, Inches(11), Inches(0.8), Inches(8.24), Inches(9.65))
         elif hasPicture:
-            print("4")
             slide.shapes.add_picture(file_path, Inches(11), Inches(0.8), Inches(8.24), Inches(9.65))
 
         title_box = slide.shapes.add_textbox(Inches(0.9), Inches(0.9), Inches(9.71), Inches(2.12))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(0.9), Inches(3.38), Inches(9.71), Inches(7))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(66)
-            paragraph.font.name = 'Gill Sans MT'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Segoe UI Semibold'
-            paragraph.font.color.rgb = RGBColor(5, 14, 56)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(16)
+        slide_format(title_frame, 66, 'Gill Sans MT', 5, 14, 56, 0, 0)
+        slide_format(content_frame, 32, 'Segoe UI Semibold', 5, 14, 56, 0, 16)
+
 
     elif template_choice == 'dark_modern':
         slide = prs.slides[slideNum]
         if auto:
-            print("3")
             image_url = search_pexels_images(slide_content['title'])
             if image_url:
                 # Download the image
@@ -1192,31 +838,19 @@ def update_content_structure_4(prs, file_path, auto, hasPicture, slide_content, 
                 image_data = BytesIO(response.content)
                 slide.shapes.add_picture(image_data, Inches(11), Inches(0.8), Inches(8.12), Inches(9.65))
         elif hasPicture:
-            print("4")
             slide.shapes.add_picture(file_path, Inches(11), Inches(0.8), Inches(8.12), Inches(9.65))
 
         title_box = slide.shapes.add_textbox(Inches(0.9), Inches(0.9), Inches(9.71), Inches(2.12))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(0.9), Inches(3.38), Inches(9.71), Inches(7))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
 
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(66)
-            paragraph.font.color.rgb = RGBColor(255, 165, 0)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.name = 'Times New Roman'
-            paragraph.font.size = Pt(32)
-            paragraph.font.color.rgb = RGBColor(255, 255, 255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(20)
+        slide_format(title_frame, 66, 'Times New Roman', 255, 165, 0, 0, 0)
+        slide_format(content_frame, 32, 'Times New Roman', 255, 255, 255, 0, 20)
 
     elif template_choice == 'dark_blue':
         slide = prs.slides[slideNum]
@@ -1233,31 +867,20 @@ def update_content_structure_4(prs, file_path, auto, hasPicture, slide_content, 
             slide.shapes.add_picture(file_path, Inches(11), Inches(0.8), Inches(8.24), Inches(9.65))
 
         title_box = slide.shapes.add_textbox(Inches(0.9), Inches(0.9), Inches(9.71), Inches(2.12))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(0.9), Inches(3.38), Inches(9.71), Inches(7))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(80)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 255, 255)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(16)
+        slide_format(title_frame, 80, 'Arial', 255, 20, 147, 0, 0)
+        slide_format(content_frame, 32, 'Arial', 255, 255, 255, 0, 16)
 
     elif template_choice == 'bright_modern':
         slide = prs.slides[slideNum]
         if auto:
-            print("3")
             image_url = search_pexels_images(slide_content['title'])
             if image_url:
                 # Download the image
@@ -1265,27 +888,16 @@ def update_content_structure_4(prs, file_path, auto, hasPicture, slide_content, 
                 image_data = BytesIO(response.content)
                 slide.shapes.add_picture(image_data, Inches(11), Inches(0.8), Inches(8.12), Inches(9.65))
         elif hasPicture:
-            print("4")
             slide.shapes.add_picture(file_path, Inches(11), Inches(0.8), Inches(8.12), Inches(9.65))
 
         title_box = slide.shapes.add_textbox(Inches(0.9), Inches(0.9), Inches(9.71), Inches(2.12))
-        title_box.text = slide_content['title']
         content_box = slide.shapes.add_textbox(Inches(0.9), Inches(3.38), Inches(9.71), Inches(7))
+        title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
         content_frame = content_box.text_frame
         title_frame = title_box.text_frame
-        for paragraph in title_frame.paragraphs:
-            paragraph.font.size = Pt(66)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(255, 20, 147)
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
-        for paragraph in content_frame.paragraphs:
-            paragraph.font.size = Pt(32)
-            paragraph.font.name = 'Arial'
-            paragraph.font.color.rgb = RGBColor(0, 0, 0)
-            paragraph.style = 'Bullet'
-            paragraph.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
-            paragraph.space_after = Pt(20)
+        slide_format(title_frame, 66, 'Arial', 255, 20, 147, 0, 0)
+        slide_format(content_frame, 32, 'Arial', 0, 0, 0, 0, 20)

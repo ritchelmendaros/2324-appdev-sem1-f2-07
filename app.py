@@ -1,5 +1,4 @@
 import openai
-import os
 import uuid
 import firebase_admin
 
@@ -10,11 +9,8 @@ from flask_login import login_required, logout_user
 from utils.generate import parse_response, create_ppt, update_slide_ppt
 from utils.chatdev import chat_development, slide_chat_development
 from pptx import Presentation
-from pptx.dml.color import RGBColor
-from werkzeug.utils import secure_filename
 import aspose.slides as slides
 import aspose.pydrawing as drawing
-from spire.presentation.common import *
 from spire.presentation import *
 
 app: Flask = Flask(__name__)
@@ -215,9 +211,9 @@ def generate_presentation():
         if action == 'action1':
             content = request.form.get('contents')
             template_choice = request.form.get('templates')
-            print(template_choice)
             topic = request.form.get('title')
             presentor = request.form.get('presentation-presentor')
+
             if template_choice == "simple":
                 template_choice = "simple"
             elif template_choice == "dark_modern":
@@ -247,30 +243,27 @@ def generate_presentation():
             except Exception as e:
                 flash(f'Error: {e}', 'error')
                 return render_template('GeneratePresentation.html')
+
         elif action == 'action2':
             slideNum = request.form.get('slide_num')
             instruction = request.form.get('instruction')
             uploaded_file = request.files.get('filename')
-            # template = request.form.get('instruction')
             is_auto_generated = 'isAuto' in request.form
+
             if uploaded_file:
                 hasPicture = True
             else:
                 hasPicture = False
-            print(slideNum)
-            print(instruction)
-            print(is_auto_generated)
+
             file_path = ""
             if not is_auto_generated:
                 if 'filename' not in request.files:
                     return "No file part"
 
                 uploaded_file = request.files['filename']
-
                 # If the user does not select a file, the browser submits an empty file without a filename
                 if uploaded_file.filename == '':
                     return "No selected file"
-
                 # Save the file to a location (replace 'uploads' with your desired directory)
                 upload_folder = 'uploads'
                 if not os.path.exists(upload_folder):
@@ -405,7 +398,5 @@ def save_to_firebase_storage(local_filename, title, username):
         flash('Error: Username or title is missing.', 'error')
 
 
-# try push
-# trial
 if __name__ == '__main__':
     app.run(debug=True)

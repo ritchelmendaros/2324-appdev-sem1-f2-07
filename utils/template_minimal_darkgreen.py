@@ -111,12 +111,12 @@ def update_minimal_darkgreen(prs, file_path, auto, hasPicture, slide_content, sl
                 # Download the image
                 response = requests.get(image_url)
                 image_data = BytesIO(response.content)
-                slide.shapes.add_picture(image_data,0, 0, Inches(20), Inches(4.95669291))
+                slide.shapes.add_picture(image_data, Inches(1.28), Inches(1.33), Inches(7.90), Inches(4.52))
         elif hasPicture:
-            slide.shapes.add_picture(file_path, 0, 0, Inches(20), Inches(4.95669291))
+            slide.shapes.add_picture(file_path, Inches(1.28), Inches(1.33), Inches(7.90), Inches(4.52))
 
-        title_box = slide.shapes.add_textbox(Inches(0.4173228), Inches(5.3543307), Inches(5.8346457), Inches(5.3543307))
-        content_box = slide.shapes.add_textbox(Inches(6.5), Inches(5.3543307), Inches(13.08), Inches(5))
+        title_box = slide.shapes.add_textbox(Inches(1.28), Inches(5.95), Inches(7.81), Inches(4.1))
+        content_box = slide.shapes.add_textbox(Inches(9.76), Inches(1.33), Inches(8.92), Inches(8.7))
         title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 

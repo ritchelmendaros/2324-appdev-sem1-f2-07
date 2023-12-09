@@ -93,6 +93,11 @@ def create_ppt(slides_content, template_choice, presentation_title, presenter_na
                 run.font.size = Pt(100)
                 run.font.name = 'Gill Sans MT'
                 run.font.color.rgb = RGBColor(5, 14, 56) # RGB for orange color
+        for paragraph in subtitle.text_frame.paragraphs:
+            for run in paragraph.runs:
+                run.font.size = Pt(40)
+                run.font.name = 'Gill Sans MT'
+                run.font.color.rgb = RGBColor(5, 14, 56) # RGB for orange color
         simple(prs, slides_content)
 
     elif template_choice == 'dark_modern':
@@ -104,8 +109,8 @@ def create_ppt(slides_content, template_choice, presentation_title, presenter_na
         for paragraph in subtitle.text_frame.paragraphs:
             for run in paragraph.runs:
                 run.font.name = 'Cascadia Mono'
-                run.font.size = Pt(36)
-                run.font.color.rgb = RGBColor(189, 195, 206)  # RGB for orange color
+                run.font.size = Pt(40)
+                run.font.color.rgb = RGBColor(255, 255, 255)  # RGB for orange color
         dark_modern(prs, slides_content)
 
     elif template_choice == 'dark_blue':

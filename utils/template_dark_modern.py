@@ -35,7 +35,7 @@ def dark_modern(prs, slides_content):
             title_frame = title_box.text_frame
 
             slide_format(title_frame, 50, 'Times New Roman', 114, 222, 173, 0, 0)
-            slide_format(content_frame, 32, 'Times New Roman', 189, 195, 206, 0, 16)
+            slide_format(content_frame, 32, 'Times New Roman', 255, 255, 255, 0, 16)
 
         elif count < second and count >= first:
             slide = prs.slides.add_slide(prs.slide_layouts[3])
@@ -56,7 +56,7 @@ def dark_modern(prs, slides_content):
             title_frame = title_box.text_frame
 
             slide_format(title_frame, 50, 'Times New Roman', 114, 222, 173, 0, 0)
-            slide_format(content_frame, 32, 'Times New Roman', 189, 195, 206, 0, 20)
+            slide_format(content_frame, 32, 'Times New Roman', 255, 255, 255, 0, 20)
 
         elif count < third and count >= second:
             slide = prs.slides.add_slide(prs.slide_layouts[3])
@@ -70,7 +70,7 @@ def dark_modern(prs, slides_content):
             title_frame = title_box.text_frame
 
             slide_format(title_frame, 50, 'Times New Roman', 114, 222, 173, 0, 0)
-            slide_format(content_frame, 32, 'Times New Roman', 189, 195, 206, 0, 25)
+            slide_format(content_frame, 32, 'Times New Roman', 255, 255, 255, 0, 25)
 
         else:
             # image_url = search_pexels_images(slide_content['title'])
@@ -92,7 +92,7 @@ def dark_modern(prs, slides_content):
             title_frame = title_box.text_frame
 
             slide_format(title_frame, 66, 'Times New Roman', 114, 222, 173, 0, 0)
-            slide_format(content_frame, 32, 'Times New Roman', 189, 195, 206, 0, 20)
+            slide_format(content_frame, 32, 'Times New Roman', 255, 255, 255, 0, 20)
 
         count+=1
 
@@ -126,7 +126,7 @@ def update_dark_modern(prs, file_path, auto, hasPicture, slide_content, slideNum
         title_frame = title_box.text_frame
 
         slide_format(title_frame, 50, 'Times New Roman', 114, 222, 173, 1, 0)
-        slide_format(content_frame, 32, 'Times New Roman', 189, 195, 206, 0, 16)
+        slide_format(content_frame, 32, 'Times New Roman', 255, 255, 255, 0, 16)
 
     elif slideNum < second and slideNum >= first:
         slide = prs.slides[slideNum]
@@ -150,7 +150,7 @@ def update_dark_modern(prs, file_path, auto, hasPicture, slide_content, slideNum
         title_frame = title_box.text_frame
 
         slide_format(title_frame, 50, 'Times New Roman', 114, 222, 173, 0, 0)
-        slide_format(content_frame, 32, 'Times New Roman', 189, 195, 206, 0, 20)
+        slide_format(content_frame, 32, 'Times New Roman', 255, 255, 255, 0, 20)
 
     elif slideNum < third and slideNum >= second:
         slide = prs.slides[slideNum]
@@ -164,7 +164,7 @@ def update_dark_modern(prs, file_path, auto, hasPicture, slide_content, slideNum
         title_frame = title_box.text_frame
 
         slide_format(title_frame, 50, 'Times New Roman', 114, 222, 173, 0, 0)
-        slide_format(content_frame, 32, 'Times New Roman', 189, 195, 206, 0, 25)
+        slide_format(content_frame, 32, 'Times New Roman', 255, 255, 255, 0, 25)
 
     else:
         slide = prs.slides[slideNum]
@@ -188,4 +188,4 @@ def update_dark_modern(prs, file_path, auto, hasPicture, slide_content, slideNum
         title_frame = title_box.text_frame
 
         slide_format(title_frame, 66, 'Times New Roman', 114, 222, 173, 0, 0)
-        slide_format(content_frame, 32, 'Times New Roman', 189, 195, 206, 0, 20)
+        slide_format(content_frame, 32, 'Times New Roman', 255, 255, 255, 0, 20)

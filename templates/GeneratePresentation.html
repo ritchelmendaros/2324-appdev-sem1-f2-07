@@ -27,7 +27,7 @@
                 top: 50%;
                 width: 40px;
                 padding: 16px;
-                margin-top: 0px;
+                margin-top: 15px;
                 color: white;
                 font-weight: bold;
                 font-size: 18px;
@@ -48,6 +48,16 @@
             .hidden {
                 display: none;
             }
+            .loading-indicator {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: rgba(255, 255, 255, 0.8);
+                padding: 20px;
+                border-radius: 10px;
+            }
         </style>
     </head>
     <body>
@@ -61,7 +71,7 @@
                     <input type="text" id="presentor" name="presentation-presentor" placeholder="Enter Presentor" required></label>
                     <label>Input presentation contents</label><br>
                     <textarea type="textarea" id="keypoints" name="contents" rows="8" cols="43" placeholder="Input content" autocomplete="off" required></textarea><br>
-                    <button value="Generate Presentation">Generate Presentation</button>
+                    <button value="Generate Presentation" onclick="toggleDiv('action2')">Generate Presentation</button>
                 </form>
                 <div class="editbutton" id="EditButton" style="font-family: 'Roboto Condensed';">
                     Do you want to edit generated file?
@@ -82,7 +92,7 @@
                         <input type="file" id="myFile" name="filename">
                     </div>
                     <div class="button-container" style="width: 350px;">
-                        <button style="margin-left: 50px;">Revert</button><button style="margin-left: 60px;">Done</button>
+                        <button style="margin-left: 50px;" >Revert</button><button style="margin-left: 60px;">Done</button>
                     </div>
                 </form>
             </div>
@@ -90,6 +100,9 @@
         <div class="generate-container-presentation">
             <div class="generated-content">
                 <div class="slideshow-container">
+                    <div class="Loading" id="Loading" style="display: none;">
+                        <img class="loading" src="{{ url_for('static', filename='pictures/loading.gif') }}" >
+                    </div>
                     {% for image_file in image_files %}
                         <div class="mySlides">
                             <img class="img" src="{{ image_file }}" alt="Slide {{ loop.index }}">
@@ -135,6 +148,7 @@
         }
         // Inside the generatePresentation function
         function generatePresentation() {
+            document.getElementById('loading-indicator').style.display = 'block';
             // Get the form and serialize its data
             var form = document.getElementById('presentationForm');
             var formData = new FormData(form);

@@ -315,6 +315,13 @@ select {
     user-select: none;
   }
 
+.loading {
+    width:100px;
+    height:100px;
+    margin-top: 200px;
+    margin-left: 390px;
+}
+
   /* Position the "next button" to the right */
   .next {
     right: 41px;
@@ -391,7 +398,7 @@ select {
         height: 50px;
         margin-left: 50px;
         margin-top: 20px;
-        font-family: 'Roboto';
+        font-family: 'Roboto Condensed';
         font-size: 28px;
         font-weight: 600;
         color: #121830;

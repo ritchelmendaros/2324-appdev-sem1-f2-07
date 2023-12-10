@@ -84,12 +84,13 @@ function handleCheckboxClick(checkboxId) {
 function toggleDiv(action) {
     var editDiv = document.getElementById('Edit');
     var generateDiv = document.getElementById('Generate');
+    var loadingDiv = document.getElementById('Loading');
 
     if (action === 'action1') {
         generateDiv.style.display = 'none';
         editDiv.style.display = 'block';
     } else if (action === 'action2') {
-        generateDiv.style.display = 'block';
+        loadingDiv.style.display = 'block'
         editDiv.style.display = 'none';
     }
 }

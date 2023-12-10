@@ -5,6 +5,7 @@ from utils.template_dark_modern import dark_modern, update_dark_modern
 from utils.template_minimal_blue import minimal_blue, update_minimal_blue
 from utils.template_minimal_darkgreen import minimal_darkgreen, update_minimal_darkgreen
 from utils.template_minimal_neon import minimal_neon, update_minimal_neon
+from utils.template_minimal_gray import minimal_gray, update_minimal_gray
 from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.util import Pt
@@ -153,6 +154,19 @@ def create_ppt(slides_content, template_choice, presentation_title, presenter_na
                 run.font.color.rgb = RGBColor(0, 0, 0) # RGB for orange color
         minimal_neon(prs, slides_content)
 
+    elif template_choice == 'minimal_gray':
+        for paragraph in title.text_frame.paragraphs:
+            for run in paragraph.runs:
+                run.font.name = 'Britannic Bold'
+                run.font.size = Pt(90)
+                run.font.color.rgb = RGBColor(0, 0, 0)
+        for paragraph in subtitle.text_frame.paragraphs:
+            for run in paragraph.runs:
+                run.font.size = Pt(40)
+                run.font.name = 'Franklin Gothic Demi Cond'
+                run.font.color.rgb = RGBColor(0, 0, 0) # RGB for orange color
+        minimal_gray(prs, slides_content)
+
     # Delete the first two slides after all new slides have been added
     delete_first_two_slides(prs)
 
@@ -183,6 +197,8 @@ def update_slide_ppt(slides_content, file_path, auto, hasPicture, template_choic
             update_minimal_darkgreen(prs, file_path, auto, hasPicture, slides_content[0], num)
         elif template_choice == 'minimal_neon':
             update_minimal_neon(prs, file_path, auto, hasPicture, slides_content[0], num)
+        elif template_choice == 'minimal_gray':
+            update_minimal_gray(prs, file_path, auto, hasPicture, slides_content[0], num)
 
         prs.save(os.path.join('generated', 'generated_presentation.pptx'))
     finally:

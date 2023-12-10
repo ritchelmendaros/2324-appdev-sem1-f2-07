@@ -1,3 +1,5 @@
+import shutil
+
 import openai
 import uuid
 import firebase_admin
@@ -42,7 +44,7 @@ firebase_config = {
 openai.api_key = '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'
 
 # Your Firebase configuration
-cred = credentials.Certificate("D:\RitchelMendaros\PyCharm_Projects\smartsync-ade70-firebase-adminsdk-l2ti0-1ea8a94791.json")
+cred = credentials.Certificate(r"C:\Users\HP\PycharmProjects\smartsync-ade70-firebase-adminsdk-l2ti0-1ea8a94791.json")
 firebase_admin.initialize_app(cred)
 
 # Initialize Firebase Storage
@@ -239,7 +241,11 @@ def generate_presentation():
 
                 # Convert the PowerPoint presentation to images
                 images_folder = os.path.join('static', cleaned_topic)
-                os.makedirs(images_folder, exist_ok=True)
+                if os.path.exists(images_folder):
+                    # If it exists, delete it
+                    shutil.rmtree(images_folder)
+
+                os.makedirs(images_folder)
                 image_paths = convert_ppt_to_images(ppt_path, images_folder, cleaned_topic)
                 image_files = slideshow(images_folder, cleaned_topic)
                 return render_template('GeneratePresentation.html', image_files=image_files)

@@ -82,10 +82,10 @@ function handleCheckboxClick(checkboxId) {
     });
 }
 function toggleDiv() {
-      var div = document.getElementById('myDiv');
-      if (div.style.display === 'none') {
-        div.style.display = 'block';
-      } else {
-        div.style.display = 'none';
-      }
-    }
+    var editDiv = document.getElementById('Edit');
+    var generateDiv = document.getElementById('Generate');
+
+    generateDiv.style.display = 'none';
+    editDiv.style.display = 'block';
+
+}

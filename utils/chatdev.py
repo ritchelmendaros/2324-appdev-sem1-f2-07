@@ -21,8 +21,8 @@ def build_conversation(user_message):
         {"role": "system",
          "content": f"Expand on each of the subtopics provided by the user on the topic: {user_message}. "
                     f"You can consider elaborating on the key ideas, offering supporting examples, and explaining "
-                    f"any details that you think would enhance the audience's understanding of the topic. It should "
-                    f"contain at most 4 lines every slide."
+                    f"any details that you think would enhance the audience's understanding of the topic. It should strictly "
+                    f"contain at most 4 lines every slide without nested bullets."
                     f"Expand the ideas in bullet format with summary detail."},
         {"role": "user", "content": user_message}
     ]

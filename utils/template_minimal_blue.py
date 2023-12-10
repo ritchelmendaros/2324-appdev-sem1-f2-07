@@ -35,7 +35,7 @@ def minimal_blue(prs, slides_content):
             title_frame = title_box.text_frame
 
             slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
-            slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 20)
+            slide_format(content_frame, 32, 'Georgia', 255, 255, 255, 0, 20)
 
         elif count < second and count >= first:
             slide = prs.slides.add_slide(prs.slide_layouts[10])
@@ -56,7 +56,7 @@ def minimal_blue(prs, slides_content):
             title_frame = title_box.text_frame
 
             slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
-            slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 20)
+            slide_format(content_frame, 32, 'Georgia', 255, 255, 255, 0, 20)
 
         elif count < third and count >= second:
             slide = prs.slides.add_slide(prs.slide_layouts[10])
@@ -70,7 +70,7 @@ def minimal_blue(prs, slides_content):
             title_frame = title_box.text_frame
 
             slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
-            slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 25)
+            slide_format(content_frame, 32, 'Georgia', 255, 255, 255, 0, 25)
 
         else:
             slide = prs.slides.add_slide(prs.slide_layouts[10])
@@ -91,7 +91,7 @@ def minimal_blue(prs, slides_content):
             title_frame = title_box.text_frame
 
             slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
-            slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 16)
+            slide_format(content_frame, 32, 'Georgia', 255, 255, 255, 0, 16)
 
         count += 1
 
@@ -125,7 +125,7 @@ def update_minimal_blue(prs, file_path, auto, hasPicture, slide_content, slideNu
         title_frame = title_box.text_frame
 
         slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
-        slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 20)
+        slide_format(content_frame, 32, 'Georgia', 255, 255, 255, 0, 20)
 
     elif slideNum < second and slideNum >= first:
         slide = prs.slides[slideNum]
@@ -148,7 +148,7 @@ def update_minimal_blue(prs, file_path, auto, hasPicture, slide_content, slideNu
         title_frame = title_box.text_frame
 
         slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
-        slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 20)
+        slide_format(content_frame, 32, 'Georgia', 255, 255, 255, 0, 20)
 
     elif slideNum < third and slideNum >= second:
         slide = prs.slides[slideNum]
@@ -162,7 +162,7 @@ def update_minimal_blue(prs, file_path, auto, hasPicture, slide_content, slideNu
         title_frame = title_box.text_frame
 
         slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
-        slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 25)
+        slide_format(content_frame, 32, 'Georgia', 255, 255, 255, 0, 25)
 
     else:
         slide = prs.slides[slideNum]
@@ -188,5 +188,5 @@ def update_minimal_blue(prs, file_path, auto, hasPicture, slide_content, slideNu
         title_frame = title_box.text_frame
 
         slide_format(title_frame, 50, 'Roboto Slab', 255, 255, 255, 0, 0)
-        slide_format(content_frame, 32, 'Roboto', 255, 255, 255, 0, 16)
+        slide_format(content_frame, 32, 'Georgia', 255, 255, 255, 0, 16)
 

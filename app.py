@@ -22,6 +22,7 @@ app.register_blueprint(choose)
 app.register_blueprint(generate)
 app.register_blueprint(presentation)
 app.register_blueprint(test)
+app.register_blueprint(choosetemplate)
 
 # Generate a random secret key
 app.secret_key = os.urandom(24)

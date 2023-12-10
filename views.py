@@ -7,14 +7,18 @@ choose = Blueprint('choose', __name__)
 generate = Blueprint('generate', __name__)
 presentation = Blueprint('presentation', __name__)
 test = Blueprint('test', __name__)
+choosetemplate = Blueprint('choosetemplate', __name__)
+
 
 @landing.route('/')
 def landing_page_route():
     return render_template('LandingPage.html')
 
+
 @test.route('/Test')
 def landing_page_route():
     return render_template('test.html')
+
 
 @home.route('/Home')
 def home_route():
@@ -49,3 +53,8 @@ def key_points_route():
 @presentation.route('/ViewPresentation')
 def view_presentation_route():
     return render_template('ViewPresentation.html')
+
+
+@choose.route('/ChooseTemplate')
+def choosetemplate_route():
+    return render_template('ChooseTemplates.html')

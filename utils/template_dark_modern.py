@@ -18,15 +18,15 @@ def dark_modern(prs, slides_content):
     for slide_content in slides_content:
         if count < first:
             slide = prs.slides.add_slide(prs.slide_layouts[10])
-            # file_path = os.path.join('static', 'pictures', '4.png')
-            image_url = search_pexels_images(slide_content['title'])
-            if image_url:
-                # Download the image
-                response = requests.get(image_url)
-                image_data = BytesIO(response.content)
-                slide.shapes.add_picture(image_data, Inches(2.61), Inches(1.00), Inches(7.90), Inches(4.52))
-            title_box = slide.shapes.add_textbox(Inches(2.61), Inches(5.95), Inches(7.81), Inches(4.1))
-            content_box = slide.shapes.add_textbox(Inches(10.79), Inches(1.00), Inches(8.92), Inches(8.7))
+            file_path = os.path.join('static', 'pictures', '4.png')
+            # image_url = search_pexels_images(slide_content['title'])
+            # if image_url:
+            #     # Download the image
+            #     response = requests.get(image_url)
+            #     image_data = BytesIO(response.content)
+            slide.shapes.add_picture(file_path, Inches(1.28), Inches(1.33), Inches(7.90), Inches(5.74))
+            title_box = slide.shapes.add_textbox(Inches(1.28), Inches(7.15), Inches(7.81), Inches(3.1))
+            content_box = slide.shapes.add_textbox(Inches(9.76), Inches(1.33), Inches(8.92), Inches(8.7))
             title_box.text = slide_content['title']
             content_box.text = slide_content['content']
 
@@ -35,33 +35,19 @@ def dark_modern(prs, slides_content):
             title_frame = title_box.text_frame
 
             slide_format(title_frame, 50, 'Montserrat', 114, 222, 173, 0, 0)
-            slide_format(content_frame, 32, 'Lato', 255, 255, 255, 0, 16)
+            slide_format(content_frame, 36, 'Lato', 255, 255, 255, 0, 30)
 
         elif count < second and count >= first:
             slide = prs.slides.add_slide(prs.slide_layouts[10])
-            # file_path = os.path.join('static', 'pictures', '4.png')
-            image_url = search_pexels_images(slide_content['title'])
-            if image_url:
-                # Download the image
-                response = requests.get(image_url)
-                image_data = BytesIO(response.content)
-                slide.shapes.add_picture(image_data, Inches(0.79), Inches(3.43), Inches(7.15), Inches(7.15))
-            title_box = slide.shapes.add_textbox(Inches(2.40), Inches(1.04), Inches(17.22), Inches(1.31))
-            content_box = slide.shapes.add_textbox(Inches(9.62), Inches(2.86), Inches(9.78), Inches(7.1))
-            title_box.text = slide_content['title']
-            content_box.text = slide_content['content']
-
-            title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
-            content_frame = content_box.text_frame
-            title_frame = title_box.text_frame
-
-            slide_format(title_frame, 50, 'Montserrat', 114, 222, 173, 0, 0)
-            slide_format(content_frame, 32, 'Lato', 255, 255, 255, 0, 20)
-
-        elif count < third and count >= second:
-            slide = prs.slides.add_slide(prs.slide_layouts[10])
-            title_box = slide.shapes.add_textbox(Inches(2.40), Inches(1.04), Inches(18), Inches(2))
-            content_box = slide.shapes.add_textbox(Inches(1.54), Inches(3.43), Inches(18), Inches(7.1))
+            file_path = os.path.join('static', 'pictures', '4.png')
+            # image_url = search_pexels_images(slide_content['title'])
+            # if image_url:
+            #     # Download the image
+            #     response = requests.get(image_url)
+            #     image_data = BytesIO(response.content)
+            slide.shapes.add_picture(file_path, Inches(1.4), Inches(2.61), Inches(8.48), Inches(7.3))
+            title_box = slide.shapes.add_textbox(Inches(1.38), Inches(1.15), Inches(17.22), Inches(1.31))
+            content_box = slide.shapes.add_textbox(Inches(10.13), Inches(2.61), Inches(8.5), Inches(7.1))
             title_box.text = slide_content['title']
             content_box.text = slide_content['content']
 
@@ -72,18 +58,31 @@ def dark_modern(prs, slides_content):
             slide_format(title_frame, 50, 'Montserrat', 114, 222, 173, 0, 0)
             slide_format(content_frame, 32, 'Lato', 255, 255, 255, 0, 25)
 
-        else:
-            # image_url = search_pexels_images(slide_content['title'])
+        elif count < third and count >= second:
             slide = prs.slides.add_slide(prs.slide_layouts[10])
-            # file_path = os.path.join('static', 'pictures', '4.png')
-            image_url = search_pexels_images(slide_content['title'])
-            if image_url:
-                # Download the image
-                response = requests.get(image_url)
-                image_data = BytesIO(response.content)
-                slide.shapes.add_picture(image_data, Inches(11.60), Inches(2.50), Inches(7.05), Inches(7.81))
-            title_box = slide.shapes.add_textbox(Inches(2.40), Inches(1.04), Inches(9.71), Inches(2.12))
-            content_box = slide.shapes.add_textbox(Inches(0.75), Inches(3.43), Inches(9.71), Inches(7))
+            title_box = slide.shapes.add_textbox(Inches(1.15), Inches(1), Inches(17.55), Inches(1.8))
+            content_box = slide.shapes.add_textbox(Inches(1.15), Inches(3), Inches(17.55), Inches(7.6))
+            title_box.text = slide_content['title']
+            content_box.text = slide_content['content']
+
+            title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
+            content_frame = content_box.text_frame
+            title_frame = title_box.text_frame
+
+            slide_format(title_frame, 50, 'Montserrat', 114, 222, 173, 0, 0)
+            slide_format(content_frame, 36, 'Lato', 255, 255, 255, 0, 35)
+
+        else:
+            slide = prs.slides.add_slide(prs.slide_layouts[10])
+            file_path = os.path.join('static', 'pictures', '4.png')
+            # image_url = search_pexels_images(slide_content['title'])
+            # if image_url:
+            #     # Download the image
+            #     response = requests.get(image_url)
+            #     image_data = BytesIO(response.content)
+            slide.shapes.add_picture(file_path, Inches(11), Inches(0.8), Inches(8.24), Inches(9.65))
+            title_box = slide.shapes.add_textbox(Inches(0.9), Inches(0.9), Inches(9.71), Inches(2.12))
+            content_box = slide.shapes.add_textbox(Inches(0.9), Inches(2.7), Inches(9.71), Inches(7))
             title_box.text = slide_content['title']
             content_box.text = slide_content['content']
 
@@ -92,7 +91,7 @@ def dark_modern(prs, slides_content):
             title_frame = title_box.text_frame
 
             slide_format(title_frame, 66, 'Montserrat', 114, 222, 173, 0, 0)
-            slide_format(content_frame, 32, 'Lato', 255, 255, 255, 0, 20)
+            slide_format(content_frame, 32, 'Lato', 255, 255, 255, 0, 25)
 
         count+=1
 
@@ -113,13 +112,13 @@ def update_dark_modern(prs, file_path, auto, hasPicture, slide_content, slideNum
                 # Download the image
                 response = requests.get(image_url)
                 image_data = BytesIO(response.content)
-                slide.shapes.add_picture(image_data, Inches(2.61), Inches(1.00), Inches(7.90), Inches(4.52))
+                slide.shapes.add_picture(image_data, Inches(1.28), Inches(1.33), Inches(7.90), Inches(5.74))
         elif hasPicture:
-            slide.shapes.add_picture(file_path, Inches(2.61), Inches(1.00), Inches(7.90), Inches(4.52))
+            slide.shapes.add_picture(file_path, Inches(1.28), Inches(1.33), Inches(7.90), Inches(5.74))
 
-        title_box = slide.shapes.add_textbox(Inches(2.61), Inches(5.95), Inches(7.81), Inches(4.1))
+        title_box = slide.shapes.add_textbox(Inches(1.28), Inches(7.15), Inches(7.81), Inches(3.1))
+        content_box = slide.shapes.add_textbox(Inches(9.76), Inches(1.33), Inches(8.92), Inches(8.7))
         title_box.text = slide_content['title']
-        content_box = slide.shapes.add_textbox(Inches(10.79), Inches(1.00), Inches(8.92), Inches(8.7))
         content_box.text = slide_content['content']
 
         title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
@@ -127,7 +126,7 @@ def update_dark_modern(prs, file_path, auto, hasPicture, slide_content, slideNum
         title_frame = title_box.text_frame
 
         slide_format(title_frame, 50, 'Montserrat', 114, 222, 173, 0, 0)
-        slide_format(content_frame, 32, 'Lato', 255, 255, 255, 0, 16)
+        slide_format(content_frame, 36, 'Lato', 255, 255, 255, 0, 30)
 
     elif slideNum < second and slideNum >= first:
         slide = prs.slides[slideNum]
@@ -139,24 +138,10 @@ def update_dark_modern(prs, file_path, auto, hasPicture, slide_content, slideNum
                 image_data = BytesIO(response.content)
                 slide.shapes.add_picture(image_data, Inches(0.79), Inches(3.43), Inches(7.15), Inches(7.15))
         elif hasPicture:
-            slide.shapes.add_picture(file_path, Inches(0.79), Inches(3.43), Inches(7.15), Inches(7.15))
+            slide.shapes.add_picture(file_path, Inches(1.4), Inches(2.61), Inches(8.48), Inches(7.3))
 
-        title_box = slide.shapes.add_textbox(Inches(2.40), Inches(1.04), Inches(17.22), Inches(1.31))
-        content_box = slide.shapes.add_textbox(Inches(9.62), Inches(2.86), Inches(9.78), Inches(7.1))
-        title_box.text = slide_content['title']
-        content_box.text = slide_content['content']
-
-        title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
-        content_frame = content_box.text_frame
-        title_frame = title_box.text_frame
-
-        slide_format(title_frame, 50, 'Montserrat', 114, 222, 173, 0, 0)
-        slide_format(content_frame, 32, 'Lato', 255, 255, 255, 0, 20)
-
-    elif slideNum < third and slideNum >= second:
-        slide = prs.slides[slideNum]
-        title_box = slide.shapes.add_textbox(Inches(2.40), Inches(1.04), Inches(18), Inches(2))
-        content_box = slide.shapes.add_textbox(Inches(1.54), Inches(3.43), Inches(18), Inches(7.1))
+        title_box = slide.shapes.add_textbox(Inches(1.38), Inches(1.15), Inches(17.22), Inches(1.31))
+        content_box = slide.shapes.add_textbox(Inches(10.13), Inches(2.61), Inches(8.5), Inches(7.1))
         title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
@@ -167,20 +152,10 @@ def update_dark_modern(prs, file_path, auto, hasPicture, slide_content, slideNum
         slide_format(title_frame, 50, 'Montserrat', 114, 222, 173, 0, 0)
         slide_format(content_frame, 32, 'Lato', 255, 255, 255, 0, 25)
 
-    else:
+    elif slideNum < third and slideNum >= second:
         slide = prs.slides[slideNum]
-        if auto:
-            image_url = search_pexels_images(slide_content['title'])
-            if image_url:
-                # Download the image
-                response = requests.get(image_url)
-                image_data = BytesIO(response.content)
-                slide.shapes.add_picture(image_data, Inches(11.60), Inches(2.50), Inches(7.05), Inches(7.81))
-        elif hasPicture:
-            slide.shapes.add_picture(file_path, Inches(11.60), Inches(2.50), Inches(7.05), Inches(7.81))
-
-        title_box = slide.shapes.add_textbox(Inches(2.40), Inches(1.04), Inches(9.71), Inches(2.12))
-        content_box = slide.shapes.add_textbox(Inches(0.75), Inches(3.43), Inches(9.71), Inches(7))
+        title_box = slide.shapes.add_textbox(Inches(1.15), Inches(1), Inches(17.55), Inches(1.8))
+        content_box = slide.shapes.add_textbox(Inches(1.15), Inches(3), Inches(17.55), Inches(7.6))
         title_box.text = slide_content['title']
         content_box.text = slide_content['content']
 
@@ -189,4 +164,28 @@ def update_dark_modern(prs, file_path, auto, hasPicture, slide_content, slideNum
         title_frame = title_box.text_frame
 
         slide_format(title_frame, 50, 'Montserrat', 114, 222, 173, 0, 0)
-        slide_format(content_frame, 32, 'Lato', 255, 255, 255, 0, 20)
+        slide_format(content_frame, 36, 'Lato', 255, 255, 255, 0, 35)
+
+    else:
+        slide = prs.slides[slideNum]
+        if auto:
+            image_url = search_pexels_images(slide_content['title'])
+            if image_url:
+                # Download the image
+                response = requests.get(image_url)
+                image_data = BytesIO(response.content)
+                slide.shapes.add_picture(image_data, Inches(11), Inches(0.8), Inches(8.24), Inches(9.65))
+        elif hasPicture:
+            slide.shapes.add_picture(file_path, Inches(11), Inches(0.8), Inches(8.24), Inches(9.65))
+
+        title_box = slide.shapes.add_textbox(Inches(0.9), Inches(0.9), Inches(9.71), Inches(2.12))
+        content_box = slide.shapes.add_textbox(Inches(0.9), Inches(2.7), Inches(9.71), Inches(7))
+        title_box.text = slide_content['title']
+        content_box.text = slide_content['content']
+
+        title_box.text_frame.word_wrap = content_box.text_frame.word_wrap = True
+        content_frame = content_box.text_frame
+        title_frame = title_box.text_frame
+
+        slide_format(title_frame, 66, 'Montserrat', 114, 222, 173, 0, 0)
+        slide_format(content_frame, 32, 'Lato', 255, 255, 255, 0, 25)

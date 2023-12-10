@@ -18,13 +18,13 @@ def simple(prs, slides_content):
     for slide_content in slides_content:
         if count < first:
             slide = prs.slides.add_slide(prs.slide_layouts[6])
-            file_path = os.path.join('static', 'pictures', '4.png')
-            # image_url = search_pexels_images(slide_content['title'])
-            # if image_url:
-            #     # Download the image
-            #     response = requests.get(image_url)
-            #     image_data = BytesIO(response.content)
-            slide.shapes.add_picture(file_path, Inches(1.28), Inches(1.33), Inches(7.90), Inches(4.52))
+            # file_path = os.path.join('static', 'pictures', '4.png')
+            image_url = search_pexels_images(slide_content['title'])
+            if image_url:
+                # Download the image
+                response = requests.get(image_url)
+                image_data = BytesIO(response.content)
+                slide.shapes.add_picture(image_data, Inches(1.28), Inches(1.33), Inches(7.90), Inches(4.52))
             title_box = slide.shapes.add_textbox(Inches(1.28), Inches(5.95), Inches(7.81), Inches(4.1))
             content_box = slide.shapes.add_textbox(Inches(9.76), Inches(1.33), Inches(8.92), Inches(8.7))
             title_box.text = slide_content['title']
@@ -39,13 +39,13 @@ def simple(prs, slides_content):
 
         elif count < second and count >= first:
             slide = prs.slides.add_slide(prs.slide_layouts[6])
-            file_path = os.path.join('static', 'pictures', '4.png')
-            # image_url = search_pexels_images(slide_content['title'])
-            # if image_url:
-            #     # Download the image
-            #     response = requests.get(image_url)
-            #     image_data = BytesIO(response.content)
-            slide.shapes.add_picture(file_path, Inches(1.4), Inches(3), Inches(8.48), Inches(7.15))
+            # file_path = os.path.join('static', 'pictures', '4.png')
+            image_url = search_pexels_images(slide_content['title'])
+            if image_url:
+                # Download the image
+                response = requests.get(image_url)
+                image_data = BytesIO(response.content)
+                slide.shapes.add_picture(image_data, Inches(1.4), Inches(3), Inches(8.48), Inches(7.15))
             title_box = slide.shapes.add_textbox(Inches(1.38), Inches(1.15), Inches(17.22), Inches(1.31))
             content_box = slide.shapes.add_textbox(Inches(10.13), Inches(3), Inches(8.5), Inches(7.1))
             title_box.text = slide_content['title']
@@ -73,13 +73,13 @@ def simple(prs, slides_content):
             slide_format(content_frame, 32, 'Bahnschrift', 5, 14, 56, 0, 25)
         else:
             slide = prs.slides.add_slide(prs.slide_layouts[6])
-            file_path = os.path.join('static', 'pictures', '4.png')
-            # image_url = search_pexels_images(slide_content['title'])
-            # if image_url:
-            #     # Download the image
-            #     response = requests.get(image_url)
-            #     image_data = BytesIO(response.content)
-            slide.shapes.add_picture(file_path, Inches(11), Inches(0.8), Inches(8.24), Inches(9.65))
+            # file_path = os.path.join('static', 'pictures', '4.png')
+            image_url = search_pexels_images(slide_content['title'])
+            if image_url:
+                # Download the image
+                response = requests.get(image_url)
+                image_data = BytesIO(response.content)
+                slide.shapes.add_picture(image_data, Inches(11), Inches(0.8), Inches(8.24), Inches(9.65))
             title_box = slide.shapes.add_textbox(Inches(0.9), Inches(0.9), Inches(9.71), Inches(2.12))
             content_box = slide.shapes.add_textbox(Inches(0.9), Inches(3.38), Inches(9.71), Inches(7))
             title_box.text = slide_content['title']

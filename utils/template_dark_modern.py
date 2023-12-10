@@ -18,13 +18,13 @@ def dark_modern(prs, slides_content):
     for slide_content in slides_content:
         if count < first:
             slide = prs.slides.add_slide(prs.slide_layouts[10])
-            file_path = os.path.join('static', 'pictures', '4.png')
-            # image_url = search_pexels_images(slide_content['title'])
-            # if image_url:
-            #     # Download the image
-            #     response = requests.get(image_url)
-            #     image_data = BytesIO(response.content)
-            slide.shapes.add_picture(file_path, Inches(2.61), Inches(1.00), Inches(7.90), Inches(4.52))
+            # file_path = os.path.join('static', 'pictures', '4.png')
+            image_url = search_pexels_images(slide_content['title'])
+            if image_url:
+                # Download the image
+                response = requests.get(image_url)
+                image_data = BytesIO(response.content)
+                slide.shapes.add_picture(image_data, Inches(2.61), Inches(1.00), Inches(7.90), Inches(4.52))
             title_box = slide.shapes.add_textbox(Inches(2.61), Inches(5.95), Inches(7.81), Inches(4.1))
             content_box = slide.shapes.add_textbox(Inches(10.79), Inches(1.00), Inches(8.92), Inches(8.7))
             title_box.text = slide_content['title']
@@ -39,13 +39,13 @@ def dark_modern(prs, slides_content):
 
         elif count < second and count >= first:
             slide = prs.slides.add_slide(prs.slide_layouts[10])
-            file_path = os.path.join('static', 'pictures', '4.png')
-            # image_url = search_pexels_images(slide_content['title'])
-            # if image_url:
-            #     # Download the image
-            #     response = requests.get(image_url)
-            #     image_data = BytesIO(response.content)
-            slide.shapes.add_picture(file_path, Inches(0.79), Inches(3.43), Inches(7.15), Inches(7.15))
+            # file_path = os.path.join('static', 'pictures', '4.png')
+            image_url = search_pexels_images(slide_content['title'])
+            if image_url:
+                # Download the image
+                response = requests.get(image_url)
+                image_data = BytesIO(response.content)
+                slide.shapes.add_picture(image_data, Inches(0.79), Inches(3.43), Inches(7.15), Inches(7.15))
             title_box = slide.shapes.add_textbox(Inches(2.40), Inches(1.04), Inches(17.22), Inches(1.31))
             content_box = slide.shapes.add_textbox(Inches(9.62), Inches(2.86), Inches(9.78), Inches(7.1))
             title_box.text = slide_content['title']
@@ -75,13 +75,13 @@ def dark_modern(prs, slides_content):
         else:
             # image_url = search_pexels_images(slide_content['title'])
             slide = prs.slides.add_slide(prs.slide_layouts[10])
-            file_path = os.path.join('static', 'pictures', '4.png')
-            # image_url = search_pexels_images(slide_content['title'])
-            # if image_url:
-            #     # Download the image
-            #     response = requests.get(image_url)
-            #     image_data = BytesIO(response.content)
-            slide.shapes.add_picture(file_path, Inches(11.60), Inches(2.50), Inches(7.05), Inches(7.81))
+            # file_path = os.path.join('static', 'pictures', '4.png')
+            image_url = search_pexels_images(slide_content['title'])
+            if image_url:
+                # Download the image
+                response = requests.get(image_url)
+                image_data = BytesIO(response.content)
+                slide.shapes.add_picture(image_data, Inches(11.60), Inches(2.50), Inches(7.05), Inches(7.81))
             title_box = slide.shapes.add_textbox(Inches(2.40), Inches(1.04), Inches(9.71), Inches(2.12))
             content_box = slide.shapes.add_textbox(Inches(0.75), Inches(3.43), Inches(9.71), Inches(7))
             title_box.text = slide_content['title']

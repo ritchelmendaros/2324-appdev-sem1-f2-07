@@ -226,6 +226,10 @@ def generate_presentation():
                 template_choice = "minimal_darkgreen"
             elif template_choice == "minimal_blue":
                 template_choice = "minimal_blue"
+            elif template_choice == "minimal_neon":
+                template_choice = "minimal_neon"
+            elif template_choice == "minimal_gray":
+                template_choice = "minimal_gray "
 
             assistant_response = chat_development(content)
             session['assistant_response'] = assistant_response

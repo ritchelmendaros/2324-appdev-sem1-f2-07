@@ -80,13 +80,14 @@ html, body {
 
 }
 
+
 .generate-container-presentation{
     width: 880px;
-    height: 580px;
+    height: 480px;
     top: 150px;
-    left: 560px;
+    left: 589px;
     background-color:white;
-    position: absolute;
+    position: fixed;
 }
 .view-container-presentation{
     width: 880px;
@@ -183,7 +184,7 @@ textarea::-webkit-scrollbar {
     font-size: 15px;
     margin-top: 0px;
     margin-right: 5px;
-    color: #dce0fc;
+    color: #121830;
 
 }
 .generate-container-presentation button, .view-container-presentation button{
@@ -271,7 +272,7 @@ select {
 .checkbox-container1 {
     display: flex;
     gap: 10px; /* Adjust the gap between checkboxes */
-    width: 275px;
+    width: 400px;
 }
 .checkbox-container1 label {
     font-family: 'Roboto Condensed';
@@ -313,6 +314,13 @@ select {
     border-radius: 0 3px 3px 0;
     user-select: none;
   }
+
+.loading {
+    width:100px;
+    height:100px;
+    margin-top: 200px;
+    margin-left: 390px;
+}
 
   /* Position the "next button" to the right */
   .next {
@@ -390,7 +398,7 @@ select {
         height: 50px;
         margin-left: 50px;
         margin-top: 20px;
-        font-family: 'Roboto';
+        font-family: 'Roboto Condensed';
         font-size: 28px;
         font-weight: 600;
         color: #121830;

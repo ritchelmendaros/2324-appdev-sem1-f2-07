@@ -81,11 +81,16 @@ function handleCheckboxClick(checkboxId) {
         }
     });
 }
-function toggleDiv() {
+function toggleDiv(action) {
     var editDiv = document.getElementById('Edit');
     var generateDiv = document.getElementById('Generate');
+    var loadingDiv = document.getElementById('Loading');
 
-    generateDiv.style.display = 'none';
-    editDiv.style.display = 'block';
-
+    if (action === 'action1') {
+        generateDiv.style.display = 'none';
+        editDiv.style.display = 'block';
+    } else if (action === 'action2') {
+        loadingDiv.style.display = 'block'
+        editDiv.style.display = 'none';
+    }
 }

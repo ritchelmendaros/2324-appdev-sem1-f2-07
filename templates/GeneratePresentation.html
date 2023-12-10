@@ -6,9 +6,11 @@
         {% include 'darkbluelogoheader.html' %}
         <style>
             .slideshow-container {
-                max-width: 1000px;
-                position: relative;
-                margin: auto;
+                width: 880px;
+                height: 497px;
+                position: fixed;
+                border-style: solid;
+                border-radius: 10px;
             }
 
             .mySlides {
@@ -17,29 +19,44 @@
 
             .img {
                 width: 100%;
+                border-radius: 8px;
             }
 
             .prev, .next {
-                position: absolute;
+                position: fixed;
                 top: 50%;
-                width: auto;
+                width: 40px;
                 padding: 16px;
-                margin-top: -22px;
+                margin-top: 15px;
                 color: white;
                 font-weight: bold;
                 font-size: 18px;
                 transition: 0.6s ease;
-                border-radius: 0 3px 3px 0;
+                border-radius: 0 5px 5px 0;
                 user-select: none;
+                background-color: #121830;
             }
 
             .next {
-                right: 0;
-                border-radius: 3px 0 0 3px;
+                right: 70px;
+                border-radius: 5px 0 0 5px;
             }
 
             .prev:hover, .next:hover {
                 background-color: rgba(0, 0, 0, 0.8);
+            }
+            .hidden {
+                display: none;
+            }
+            .loading-indicator {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: rgba(255, 255, 255, 0.8);
+                padding: 20px;
+                border-radius: 10px;
             }
         </style>
     </head>
@@ -54,23 +71,28 @@
                     <input type="text" id="presentor" name="presentation-presentor" placeholder="Enter Presentor" required></label>
                     <label>Input presentation contents</label><br>
                     <textarea type="textarea" id="keypoints" name="contents" rows="8" cols="43" placeholder="Input content" autocomplete="off" required></textarea><br>
-                    <button value="Generate Presentation" onclick="toggleDiv()">Generate Presentation</button>
+                    <button value="Generate Presentation" onclick="toggleDiv('action2')">Generate Presentation</button>
                 </form>
+                <div class="editbutton" id="EditButton" style="font-family: 'Roboto Condensed';">
+                    Do you want to edit generated file?
+                    <a href="#" onclick="toggleDiv('action1')">Click here</a>
+                </div>
             </div>
-            <div class="edit" id="Edit" style="display: none">
+            <div class="edit" id="Edit" style="display: none; margin-top: 40px;">
                 <form action="/GeneratePresentation" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="action2">
                     <label>Edit Specific Slide
-                        <input type="text" id="slideNum" name="slide_num" placeholder="Enter Slide Number" required></label>
-                    <label>Instruction
-                        <textarea type="textarea" id="instructions" name="instruction" rows="6" cols="43" placeholder="Enter Instruction" required></textarea></label>
+                        <input type="text" id="slideNum" name="slide_num" placeholder="Enter Slide Number" required>
+                    </label>
+                    <label style="margin-right: 100px;">Instruction</label>
+                        <textarea type="textarea" id="instructions" name="instruction" rows="6" cols="43" placeholder="Enter Instruction" required></textarea>
                     <div class="checkbox-container1">
                         <input type="checkbox" id="auto" name="isAuto" value="auto">
                         <label for="auto">Auto Generated</label>
                         <input type="file" id="myFile" name="filename">
                     </div>
-                    <div class="button-container">
-                        <button>Revert</button> <button>Done</button>
+                    <div class="button-container" style="width: 350px;">
+                        <button style="margin-left: 50px;" >Revert</button><button style="margin-left: 60px;">Done</button>
                     </div>
                 </form>
             </div>
@@ -78,14 +100,17 @@
         <div class="generate-container-presentation">
             <div class="generated-content">
                 <div class="slideshow-container">
+                    <div class="Loading" id="Loading" style="display: none;">
+                        <img class="loading" src="{{ url_for('static', filename='pictures/loading.gif') }}" >
+                    </div>
                     {% for image_file in image_files %}
                         <div class="mySlides">
                             <img class="img" src="{{ image_file }}" alt="Slide {{ loop.index }}">
                         </div>
                     {% endfor %}
 
-                        <a class="prev" onclick="plusSlides(-1)">&#10094; Previous</a>
-                        <a class="next" onclick="plusSlides(1)">Next &#10095;</a>
+                        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                        <a class="next" onclick="plusSlides(1)">&#10095;</a>
 
                         <script>
                             slideIndex = 0;
@@ -112,7 +137,7 @@
                         </script>
                     </div>
             </div>
-            <button onclick="downloadPresentation()" >Download Presentation</button>
+            <button onclick="downloadPresentation()" style="position: fixed; margin-top: 510px;">Download Presentation</button>
         </div>
 
     <script>
@@ -123,6 +148,7 @@
         }
         // Inside the generatePresentation function
         function generatePresentation() {
+            document.getElementById('loading-indicator').style.display = 'block';
             // Get the form and serialize its data
             var form = document.getElementById('presentationForm');
             var formData = new FormData(form);

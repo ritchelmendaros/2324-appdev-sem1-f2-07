@@ -54,36 +54,27 @@
                     <input type="text" id="presentor" name="presentation-presentor" placeholder="Enter Presentor" required></label>
                     <label>Input presentation contents</label><br>
                     <textarea type="textarea" id="keypoints" name="contents" rows="8" cols="43" placeholder="Input content" autocomplete="off" required></textarea><br>
-                    <label>Choose template</label><br>
-                    <div class="checkbox-container">
-                        <select name="templates" id="template">
-                            <option value="simple">Simple</option>
-                            <option value="minimal_blue">Minimal - Blue</option>
-                            <option value="minimal_darkgreen">Minimal - Dark Green</option>
-                            <option value="dark_modern">Minimal - Dark Modern</option>
-                        </select>
-                    </div>
                     <button value="Generate Presentation" onclick="toggleDiv()">Generate Presentation</button>
                 </form>
-                </div>
-                <div class="edit" id="Edit" style="display: none">
-                        <form action="/GeneratePresentation" method="post" enctype="multipart/form-data">
-                            <input type="hidden" name="action" value="action2">
-                            <label>Edit Specific Slide
-                            <input type="text" id="slideNum" name="slide_num" placeholder="Enter Slide Number" required></label>
-                            <label>Instruction
-                                <textarea type="textarea" id="instructions" name="instruction" rows="6" cols="43" placeholder="Enter Instruction" required></textarea></label>
-                            <div class="checkbox-container1">
-                                <input type="checkbox" id="auto" name="isAuto" value="auto">
-                                <label for="auto">Auto Generated</label>
-                                <input type="file" id="myFile" name="filename">
-                            </div>
-                            <div class="button-container">
-                                <button>Revert</button> <button>Done</button>
-                            </div>
-                        </form>
-                </div>
             </div>
+            <div class="edit" id="Edit" style="display: none">
+                <form action="/GeneratePresentation" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="action2">
+                    <label>Edit Specific Slide
+                        <input type="text" id="slideNum" name="slide_num" placeholder="Enter Slide Number" required></label>
+                    <label>Instruction
+                        <textarea type="textarea" id="instructions" name="instruction" rows="6" cols="43" placeholder="Enter Instruction" required></textarea></label>
+                    <div class="checkbox-container1">
+                        <input type="checkbox" id="auto" name="isAuto" value="auto">
+                        <label for="auto">Auto Generated</label>
+                        <input type="file" id="myFile" name="filename">
+                    </div>
+                    <div class="button-container">
+                        <button>Revert</button> <button>Done</button>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="generate-container-presentation">
             <div class="generated-content">
                 <div class="slideshow-container">

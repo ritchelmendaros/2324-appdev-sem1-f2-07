@@ -210,7 +210,8 @@ def generate_presentation():
         action = request.form.get('action')
         if action == 'action1':
             content = request.form.get('contents')
-            template_choice = request.form.get('templates')
+            template_choice = session.get('selected_template')
+            print(template_choice)
             topic = request.form.get('title')
             presentor = request.form.get('presentation-presentor')
             cleaned_topic = topic.strip()
@@ -306,6 +307,16 @@ def slideshow(images_folder, topic):
 
     # Render the template with the list of image files
     return image_files
+
+
+@app.route('/select_template', methods=['POST'])
+def select_template():
+    if request.method == 'POST':
+        template_name = request.form.get('template_name')
+        print(template_name)
+        # Perform actions with the selected template, e.g., store it in the session
+        session['selected_template'] = template_name
+        return render_template('GeneratePresentation.html', template_name=template_name)
 
 
 conversion_counter = 0

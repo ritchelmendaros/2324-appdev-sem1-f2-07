@@ -9,11 +9,30 @@
         <div class="latestPresentations">
             <div class="latest" > Choose Templates</div>
             <div class="pastPresentations">
-                <a href="{{ url_for('generate.presentation_route') }}"><img src="static/pictures/minimal_blue.png"></a>
-                <a href="{{ url_for('generate.presentation_route') }}"><img src="static/pictures/minimal_darkgreen.png"></a>
-                <a href="{{ url_for('generate.presentation_route') }}"><img src="static/pictures/dark_modern.png"></a>
-                <a href="{{ url_for('generate.presentation_route') }}"><img src="static/pictures/simple.png"></a>
+                <a href="{{ url_for('generate.presentation_route') }}" onclick="selectTemplate('minimal_blue')"><img src="static/pictures/minimal_blue.png"></a>
+                <a href="{{ url_for('generate.presentation_route') }}" onclick="selectTemplate('minimal_darkgreen')"><img src="static/pictures/minimal_darkgreen.png"></a>
+                <a href="{{ url_for('generate.presentation_route') }}" onclick="selectTemplate('dark_modern')"><img src="static/pictures/dark_modern.png"></a>
+                <a href="{{ url_for('generate.presentation_route') }}" onclick="selectTemplate('simple')"><img src="static/pictures/simple.png"></a>
             </div>
         </div>
+        <script>
+            function selectTemplate(templateName) {
+                fetch('/select_template', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'template_name': templateName,
+                    }),
+                })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data); // Log the response from the server
+                    // You can handle the response as needed
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        </script>
     </body>
 </html>

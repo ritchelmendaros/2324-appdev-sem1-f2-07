@@ -146,40 +146,43 @@ def create_ppt(slides_content, template_choice, presentation_title, presenter_na
     prs.save(os.path.join('generated', 'generated_presentation.pptx'))
 
 
-def update_slide_ppt(slides_content, file_path, auto, hasPicture, template_choice, slideNum):
-    ppt = os.path.join('generated', f'generated_presentation.pptx')
+def update_slide_ppt(slides_content, file_path, auto, hasPicture, template_choice, slideNum, retain):
+    ppt = os.path.join('generated', 'generated_presentation.pptx')
     prs = Presentation(ppt)
-    num = int(slideNum)
-    print(num)
-    numslides = len(prs.slides)
-    divided = (numslides - 1) / 4
+    try:
+        num = int(slideNum)
+        print(num)
 
-    first = math.ceil(divided + 1)
-    second = math.ceil(first + divided)
-    third = math.ceil(second + divided)
+        # add content slides
+        if num < len(prs.slides):
+            remove_all_elements(prs, num, retain, auto)
+        else:
+            prs.slides.add_slide(prs.slide_layouts[6])
 
-    # add content slides
-    if num < len(prs.slides):
-        remove_all_elements(prs, num)
-    else:
-        prs.slides.add_slide(prs.slide_layouts[6])
+        if template_choice == 'simple':
+            update_simple(prs, file_path, auto, hasPicture, slides_content[0],num)
+        elif template_choice == 'dark_modern':
+            update_dark_modern(prs, file_path, auto, hasPicture, slides_content[0], num)
+        elif template_choice == 'dark_blue':
+            update_minimal_blue(prs, file_path, auto, hasPicture, slides_content[0], num)
+        else:
+            update_minimal_darkgreen(prs, file_path, auto, hasPicture, slides_content[0], num)
 
-    if template_choice == 'simple':
-        update_simple(prs, file_path, auto, hasPicture, slides_content[0],num)
-    elif template_choice == 'dark_modern':
-        update_dark_modern(prs, file_path, auto, hasPicture, slides_content[0], num)
-    elif template_choice == 'dark_blue':
-        update_minimal_blue(prs, file_path, auto, hasPicture, slides_content[0], num)
-    else:
-        update_minimal_darkgreen(prs, file_path, auto, hasPicture, slides_content[0], num)
-
-    prs.save(os.path.join('generated', 'generated_presentation.pptx'))
+        prs.save(os.path.join('generated', 'generated_presentation.pptx'))
+    finally:
+        print("yees")
 
 
-def remove_all_elements(prs, slideNum):
+
+def remove_all_elements(prs, slideNum, retain, auto):
     # Iterate through each shape on the slide and remove it
     slide = prs.slides[slideNum]
+    i = 0
     for shape in slide.shapes:
-        shape.element.getparent().remove(shape.element)
+        if i == 0 and retain and not auto:
+            retain = False
+            continue
+        else:
+            shape.element.getparent().remove(shape.element)
 
     slide.notes_slide.notes_text_frame.clear()

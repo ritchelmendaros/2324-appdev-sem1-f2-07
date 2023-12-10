@@ -45,27 +45,28 @@
     </head>
     <body>
         <div class="container-inputs" >
-            <div class="inputs" id="myDivv" style="display: block">
+            <div class="inputs" id="Generate" style="display: block">
                 <form method="post" autocomplete="off" action="/GeneratePresentation" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="action1">
                     <label for="topic">Presentation Title:
-                    <input type="text" id="presentation-title" name="title" placeholder="Enter Title"></label>
+                    <input type="text" id="presentation-title" name="title" placeholder="Enter Title" required></label>
                     <label for="topic">Presented by:
-                    <input type="text" id="presentor" name="presentation-presentor" placeholder="Enter Presentor"></label>
+                    <input type="text" id="presentor" name="presentation-presentor" placeholder="Enter Presentor" required></label>
                     <label>Input presentation contents</label><br>
                     <textarea type="textarea" id="keypoints" name="contents" rows="8" cols="43" placeholder="Input content" autocomplete="off" required></textarea><br>
                     <label>Choose template</label><br>
                     <div class="checkbox-container">
                         <select name="templates" id="template">
+                            <option value="simple">Simple</option>
                             <option value="minimal_blue">Minimal - Blue</option>
                             <option value="minimal_darkgreen">Minimal - Dark Green</option>
                             <option value="dark_modern">Minimal - Dark Modern</option>
-                            <option value="simple">Simple</option>
                         </select>
                     </div>
                     <button value="Generate Presentation" onclick="toggleDiv()">Generate Presentation</button>
                 </form>
-                <div class="edit" id="myDiv" style="display: none">
+                </div>
+                <div class="edit" id="Edit" style="display: none">
                         <form action="/GeneratePresentation" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="action" value="action2">
                             <label>Edit Specific Slide
@@ -75,14 +76,14 @@
                             <div class="checkbox-container1">
                                 <input type="checkbox" id="auto" name="isAuto" value="auto">
                                 <label for="auto">Auto Generated</label>
-                                <input type="file" id="myFile" name="filename"></div>
-                                <div class="button-container">
-                                    <button>Revert</button> <button>Done</button>
-                                </div>
+                                <input type="file" id="myFile" name="filename">
+                            </div>
+                            <div class="button-container">
+                                <button>Revert</button> <button>Done</button>
+                            </div>
                         </form>
-                    </div>
+                </div>
             </div>
-        </div>
         <div class="generate-container-presentation">
             <div class="generated-content">
                 <div class="slideshow-container">

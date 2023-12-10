@@ -14,7 +14,7 @@ import aspose.pydrawing as drawing
 from spire.presentation import *
 
 app: Flask = Flask(__name__)
-app.config['PERMANENT_SESSION_LIFETIME'] = 3600
+# app.config['PERMANENT_SESSION_LIFETIME'] = 3600
 app.register_blueprint(home)
 app.register_blueprint(landing)
 app.register_blueprint(account)
@@ -25,7 +25,6 @@ app.register_blueprint(test)
 
 # Generate a random secret key
 app.secret_key = os.urandom(24)
-
 
 # Your web app's Firebase configuration
 firebase_config = {
@@ -42,7 +41,7 @@ firebase_config = {
 openai.api_key = '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'
 
 # Your Firebase configuration
-cred = credentials.Certificate("D:\RitchelMendaros\PyCharm_Projects\smartsync-ade70-firebase-adminsdk-l2ti0-1ea8a94791.json")
+cred = credentials.Certificate(r"C:\Users\HP\PycharmProjects\smartsync-ade70-firebase-adminsdk-l2ti0-1ea8a94791.json")
 firebase_admin.initialize_app(cred)
 
 # Initialize Firebase Storage
@@ -213,6 +212,7 @@ def generate_presentation():
             template_choice = request.form.get('templates')
             topic = request.form.get('title')
             presentor = request.form.get('presentation-presentor')
+            cleaned_topic = topic.strip()
 
             if template_choice == "simple":
                 template_choice = "simple"
@@ -226,6 +226,7 @@ def generate_presentation():
             assistant_response = chat_development(content)
             session['assistant_response'] = assistant_response
             session['template'] = template_choice
+            session['topic'] = cleaned_topic
             print(assistant_response)
             slides_content = parse_response(assistant_response)
             print(slides_content)
@@ -235,28 +236,31 @@ def generate_presentation():
                 ppt_path = os.path.join(os.path.abspath('generated'), 'generated_presentation.pptx')
 
                 # Convert the PowerPoint presentation to images
-                images_folder = os.path.join('static', topic)
+                images_folder = os.path.join('static', cleaned_topic)
                 os.makedirs(images_folder, exist_ok=True)
-                image_paths = convert_ppt_to_images(ppt_path, images_folder, topic)
-                image_files = slideshow(images_folder, topic)
+                image_paths = convert_ppt_to_images(ppt_path, images_folder, cleaned_topic)
+                image_files = slideshow(images_folder, cleaned_topic)
                 return render_template('GeneratePresentation.html', image_files=image_files)
             except Exception as e:
                 flash(f'Error: {e}', 'error')
                 return render_template('GeneratePresentation.html')
 
         elif action == 'action2':
+            # try:
             slideNum = request.form.get('slide_num')
             instruction = request.form.get('instruction')
             uploaded_file = request.files.get('filename')
             is_auto_generated = 'isAuto' in request.form
-
+            retain = True
+            print(uploaded_file)
             if uploaded_file:
                 hasPicture = True
             else:
                 hasPicture = False
 
             file_path = ""
-            if not is_auto_generated:
+            if uploaded_file and uploaded_file.filename:
+                retain = False
                 if 'filename' not in request.files:
                     return "No file part"
 
@@ -271,14 +275,24 @@ def generate_presentation():
 
                 file_path = os.path.join(upload_folder, uploaded_file.filename)
                 uploaded_file.save(file_path)
+
             slide_content_from_session = session.get('assistant_response')
+            template_choice = session.get('template')
+            topic = session.get('topic')
+
             assistant_response = slide_chat_development(slide_content_from_session, instruction, slideNum)
             print(assistant_response)
             slides_content = parse_response(assistant_response)
             print(slides_content)
-            template_choice = session.get('template')
-            update_slide_ppt(slides_content, file_path, is_auto_generated, hasPicture, template_choice, slideNum)
-            return render_template('GeneratePresentation.html')
+            update_slide_ppt(slides_content, file_path, is_auto_generated, hasPicture, template_choice, slideNum, retain)
+            update_slide_ppt(slides_content, file_path, is_auto_generated, hasPicture, template_choice, slideNum, retain)
+
+            ppt_path = os.path.join(os.path.abspath('generated'), 'generated_presentation.pptx')
+            folder_path = f"static/{topic}"
+            convert_updated_slide(ppt_path, folder_path, topic, int(slideNum))
+            images_folder = os.path.join('static', topic)
+            image_files = slideshow(images_folder, topic)
+            return render_template('GeneratePresentation.html', image_files=image_files)
 
 
 def slideshow(images_folder, topic):
@@ -321,22 +335,6 @@ def save_slides_as_images(pptx_path, output_folder):
     return [f"slide_{index}.png" for index in range(len(pres.slides))], conversion_id
 
 
-@app.route('/')
-def save_and_display_slides(pptx_path, output_folder):
-    image_paths = save_slides_as_images(pptx_path, output_folder)
-    return render_template('view_presentation.html', image_paths=image_paths)
-# Add a route to serve individual slide images
-@app.route('/slide/<int:slide_number>', methods=['GET'])
-def serve_slide_image(slide_number):
-    images_folder = os.path.join('generated', 'slides')
-    image_path = os.path.join(images_folder, f"slide_{slide_number}.png")
-
-    if os.path.exists(image_path):
-        return send_file(image_path, mimetype='image/png')
-    else:
-        os.abort(404)
-
-
 def convert_ppt_to_images(ppt_path, output_folder, topic):
     presentation = Presentation()
     print(output_folder)
@@ -361,6 +359,36 @@ def convert_ppt_to_images(ppt_path, output_folder, topic):
         # Dispose of the presentation object
         presentation.Dispose()
 
+
+def convert_updated_slide(ppt_path, output_folder, topic, slideNum):
+    presentation = Presentation()
+    print(output_folder)
+    try:
+        # Load the PowerPoint presentation
+        presentation.LoadFromFile(ppt_path)
+        i = 0
+        # Loop through the slides in the presentation
+        image_paths = []
+        for slide in presentation.Slides:
+            # Specify the output file name
+            if i == slideNum:
+                file_name = f"{output_folder}/{topic}_slide_{i + 1}.png"
+                # Save each slide as a PNG image
+                if os.path.exists(file_name):
+                    # If the file exists, remove it before saving the updated image
+                    os.remove(file_name)
+                image = slide.SaveAsImage()
+                image.Save(file_name)
+                image_paths.append(file_name)
+                image.Dispose()
+                return image_paths
+            i += 1
+        print("success")
+        return image_paths
+
+    finally:
+        # Dispose of the presentation object
+        presentation.Dispose()
 
 @app.route('/logout')
 @login_required
@@ -398,6 +426,6 @@ def save_to_firebase_storage(local_filename, title, username):
         print("Error in saving to database")
         flash('Error: Username or title is missing.', 'error')
 
-
+app.config['PERMANENT_SESSION_LIFETIME'] = 24 * 60 * 60
 if __name__ == '__main__':
     app.run(debug=True)

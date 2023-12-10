@@ -17,7 +17,7 @@ def dark_modern(prs, slides_content):
     count = 1
     for slide_content in slides_content:
         if count < first:
-            slide = prs.slides.add_slide(prs.slide_layouts[3])
+            slide = prs.slides.add_slide(prs.slide_layouts[10])
             file_path = os.path.join('static', 'pictures', '4.png')
             # image_url = search_pexels_images(slide_content['title'])
             # if image_url:
@@ -38,7 +38,7 @@ def dark_modern(prs, slides_content):
             slide_format(content_frame, 32, 'Lato', 255, 255, 255, 0, 16)
 
         elif count < second and count >= first:
-            slide = prs.slides.add_slide(prs.slide_layouts[3])
+            slide = prs.slides.add_slide(prs.slide_layouts[10])
             file_path = os.path.join('static', 'pictures', '4.png')
             # image_url = search_pexels_images(slide_content['title'])
             # if image_url:
@@ -59,7 +59,7 @@ def dark_modern(prs, slides_content):
             slide_format(content_frame, 32, 'Lato', 255, 255, 255, 0, 20)
 
         elif count < third and count >= second:
-            slide = prs.slides.add_slide(prs.slide_layouts[3])
+            slide = prs.slides.add_slide(prs.slide_layouts[10])
             title_box = slide.shapes.add_textbox(Inches(2.40), Inches(1.04), Inches(18), Inches(2))
             content_box = slide.shapes.add_textbox(Inches(1.54), Inches(3.43), Inches(18), Inches(7.1))
             title_box.text = slide_content['title']
@@ -74,7 +74,7 @@ def dark_modern(prs, slides_content):
 
         else:
             # image_url = search_pexels_images(slide_content['title'])
-            slide = prs.slides.add_slide(prs.slide_layouts[3])
+            slide = prs.slides.add_slide(prs.slide_layouts[10])
             file_path = os.path.join('static', 'pictures', '4.png')
             # image_url = search_pexels_images(slide_content['title'])
             # if image_url:

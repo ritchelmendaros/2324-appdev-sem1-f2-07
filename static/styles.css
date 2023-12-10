@@ -80,13 +80,14 @@ html, body {
 
 }
 
+
 .generate-container-presentation{
     width: 880px;
-    height: 580px;
+    height: 480px;
     top: 150px;
-    left: 560px;
+    left: 589px;
     background-color:white;
-    position: absolute;
+    position: fixed;
 }
 .view-container-presentation{
     width: 880px;
@@ -183,7 +184,7 @@ textarea::-webkit-scrollbar {
     font-size: 15px;
     margin-top: 0px;
     margin-right: 5px;
-    color: #dce0fc;
+    color: #121830;
 
 }
 .generate-container-presentation button, .view-container-presentation button{
@@ -271,7 +272,7 @@ select {
 .checkbox-container1 {
     display: flex;
     gap: 10px; /* Adjust the gap between checkboxes */
-    width: 275px;
+    width: 400px;
 }
 .checkbox-container1 label {
     font-family: 'Roboto Condensed';

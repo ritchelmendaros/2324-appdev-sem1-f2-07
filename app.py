@@ -44,7 +44,7 @@ firebase_config = {
 openai.api_key = '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'
 
 # Your Firebase configuration
-cred = credentials.Certificate(r"C:\Users\HP\PycharmProjects\smartsync-ade70-firebase-adminsdk-l2ti0-1ea8a94791.json")
+cred = credentials.Certificate("D:\RitchelMendaros\PyCharm_Projects\smartsync-ade70-firebase-adminsdk-l2ti0-1ea8a94791.json")
 firebase_admin.initialize_app(cred)
 
 # Initialize Firebase Storage
@@ -229,7 +229,7 @@ def generate_presentation():
             elif template_choice == "minimal_neon":
                 template_choice = "minimal_neon"
             elif template_choice == "minimal_gray":
-                template_choice = "minimal_gray "
+                template_choice = "minimal_gray"
 
             assistant_response = chat_development(content)
             session['assistant_response'] = assistant_response
@@ -304,7 +304,7 @@ def generate_presentation():
             convert_updated_slide(ppt_path, folder_path, topic, int(slideNum))
             images_folder = os.path.join('static', topic)
             image_files = slideshow(images_folder, topic)
-            return render_template('GeneratePresentation.html', image_files=image_files)
+            return render_template('GeneratePresentation.html', image_files=image_files, action='action1')
 
 
 def slideshow(images_folder, topic):

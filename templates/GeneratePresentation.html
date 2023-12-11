@@ -38,7 +38,7 @@
             }
 
             .next {
-                right: 70px;
+                right: 125px;
                 border-radius: 5px 0 0 5px;
             }
 
@@ -73,10 +73,7 @@
                     <textarea type="textarea" id="keypoints" name="contents" rows="8" cols="43" placeholder="Input content" autocomplete="off" required></textarea><br>
                     <button value="Generate Presentation" onclick="toggleDiv('action2')">Generate Presentation</button>
                 </form>
-                <div class="editbutton" id="EditButton" style="font-family: 'Roboto Condensed';">
-                    Do you want to edit generated file?
-                    <a href="#" onclick="toggleDiv('action1')">Click here</a>
-                </div>
+<!--                <button onclick="redirectToChooseTemplate()" style="margin-top:0">Choose Template</button>-->
             </div>
             <div class="edit" id="Edit" style="display: none; margin-top: 40px;">
                 <form action="/GeneratePresentation" method="post" enctype="multipart/form-data">
@@ -92,10 +89,12 @@
                         <input type="file" id="myFile" name="filename">
                     </div>
                     <div class="button-container" style="width: 350px;">
-                        <button style="margin-left: 50px;" >Revert</button><button style="margin-left: 60px;">Done</button>
+                        <button>Update</button>
                     </div>
                 </form>
+                    <button onclick="redirectToChooseTemplate()" style="margin-top:0">Done</button>
             </div>
+
         </div>
         <div class="generate-container-presentation">
             <div class="generated-content">
@@ -115,6 +114,10 @@
                         <script>
                             slideIndex = 0;
                             showSlides();
+
+                            function redirectToChooseTemplate() {
+                                window.location.href = "{{ url_for('choose_template') }}";
+                            }
 
                             function showSlides() {
                                 var slides = document.getElementsByClassName("mySlides");
@@ -137,7 +140,8 @@
                         </script>
                     </div>
             </div>
-            <button onclick="downloadPresentation()" style="position: fixed; margin-top: 510px;">Download Presentation</button>
+            <button onclick="downloadPresentation()" style="position: fixed; margin-top: 510px; right: 250px;">Download Presentation</button>
+            <button class="editbutton" id="EditButton" onclick="toggleDiv('action1')" style="position: fixed; margin-top: 510px; left: 420px;">Edit</button>
         </div>
 
     <script>

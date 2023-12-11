@@ -44,7 +44,7 @@ firebase_config = {
 openai.api_key = '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'
 
 # Your Firebase configuration
-cred = credentials.Certificate("D:\RitchelMendaros\PyCharm_Projects\smartsync-ade70-firebase-adminsdk-l2ti0-1ea8a94791.json")
+cred = credentials.Certificate(r"C:\Users\HP\PycharmProjects\smartsync-ade70-firebase-adminsdk-l2ti0-1ea8a94791.json")
 firebase_admin.initialize_app(cred)
 
 # Initialize Firebase Storage
@@ -206,8 +206,19 @@ def get_response():
     return structured_response
 
 
-@app.route('/GeneratePresentation', methods=['POST'])
+@app.route('/ChooseTemplate')
+def choose_template():
+    # Add logic for rendering the ChooseTemplate page
+    return render_template('ChooseTemplate.html')
+
+
+@app.route('/GeneratePresentation', methods=['GET','POST'])
 def generate_presentation():
+    # if request.method == 'GET':
+    template = session.get('selected_template')
+    if template is None:
+        # If template_choice is None, redirect to ChooseTemplate
+        return redirect(url_for('choose_template'))
     if request.method == 'POST':
         action = request.form.get('action')
         if action == 'action1':

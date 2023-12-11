@@ -3,8 +3,13 @@ import shutil
 import openai
 import uuid
 import firebase_admin
+import os
+import base64
+import bcrypt
+import json
+import io
 
-from flask import Flask, request, redirect, url_for, flash, session, send_from_directory, send_file
+from flask import Flask, request, redirect, url_for, flash, session, send_from_directory, send_file, jsonify
 from views import *
 from firebase_admin import credentials, firestore, storage
 from flask_login import login_required, logout_user
@@ -14,6 +19,10 @@ from pptx import Presentation
 import aspose.slides as slides
 import aspose.pydrawing as drawing
 from spire.presentation import *
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+from io import BytesIO
+from bson import ObjectId, json_util
 
 app: Flask = Flask(__name__)
 # app.config['PERMANENT_SESSION_LIFETIME'] = 3600
@@ -43,17 +52,31 @@ firebase_config = {
 # OpenAI API key
 openai.api_key = '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'
 
-# Your Firebase configuration
-cred = credentials.Certificate(r"C:\Users\HP\PycharmProjects\smartsync-ade70-firebase-adminsdk-l2ti0-1ea8a94791.json")
-firebase_admin.initialize_app(cred)
+# # Your Firebase configuration
+# cred = credentials.Certificate("D:\RitchelMendaros\PyCharm_Projects\smartsync-ade70-firebase-adminsdk-l2ti0-1ea8a94791.json")
+# firebase_admin.initialize_app(cred)
+#
+# # Initialize Firebase Storage
+# firebase_storage = storage.bucket(app=firebase_admin.get_app(), name="smartsync-ade70.appspot.com")
+#
+# # Reference to the Firestore database
+# db = firestore.client()
+#
+# os.makedirs('generated', exist_ok=True)
 
-# Initialize Firebase Storage
-firebase_storage = storage.bucket(app=firebase_admin.get_app(), name="smartsync-ade70.appspot.com")
+# Connect to MONGODB
+uri = "mongodb+srv://thertj:amara@smartsync.kafshog.mongodb.net/?retryWrites=true&w=majority"
 
-# Reference to the Firestore database
-db = firestore.client()
+# Create a new client and connect to the server
+client = MongoClient(uri, server_api=ServerApi('1'))
 
-os.makedirs('generated', exist_ok=True)
+db = client['test2']
+
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
 
 
 @app.route('/')
@@ -61,27 +84,25 @@ def default():
     return render_template('LandingPage.html')
 
 
-# for signin
+collection = 'user_collections'
+user_collections = db[collection]
+# Sign-in route
 @app.route('/signin', methods=['POST'])
 def signin():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        # Check if the username exists in the user collection
+        user = user_collections.find_one({'username': username})
         try:
-            # Query the users collection for the specified username
-            users_ref = db.collection('users')
-            query = users_ref.where('username', '==', username).limit(1)
-            user_documents = list(query.stream())
-            # Check if the user exists
-            if len(user_documents) == 1:
-                user_doc = user_documents[0].to_dict()
-                # Now you have the user document, and you can check the password or perform further authentication steps
-                # For simplicity, I'm assuming you store the password in the user document (Note: In practice, passwords
-                # should be hashed and securely stored)
-                if user_doc['password'] == password:
-                    # Authentication successful, add your session handling or redirection logic
+            if user:
+                # Check if the password is correct
+                if bcrypt.checkpw(password.encode('utf-8'), user['password']):
+                    # Successfully signed in, set session variable or perform other actions
                     session['username'] = username
-                    return redirect(url_for('home.home_route'))
+                    flash('Login successful. Welcome!', 'success')
+                    return redirect(url_for('search_collections'))
                 else:
                     flash('Invalid username or password', 'error')
                     return render_template('SignIn_UI.html')
@@ -97,44 +118,57 @@ def signin():
     return redirect(url_for('default'))
 
 
-# for signing up
+# Sign-up route
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+
     if request.method == 'POST':
-        # Extract user data from the form
-        username = request.form['username']
-        password = request.form['password']
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        email = request.form['email']
-        contact_number = request.form['contact_number']
+        username = request.form.get('username')
+        password = request.form.get('password')
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        email = request.form.get('email')
+        contact_number = request.form.get('contact_number')
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
         # Check for non-empty fields
         if not all([username, password, first_name, last_name, email, contact_number]):
             flash('All fields must be filled out.', 'error')
             return render_template('SignUp_UI.html')
+
         # Check email format
         if not is_valid_email(email):
             flash('Invalid email address.', 'error')
             return render_template('SignUp_UI.html')
+
         # Check contact number format
         if not is_valid_contact_number(contact_number):
             flash('Invalid contact number.', 'error')
             return render_template('SignUp_UI.html')
+
         try:
-            # Create a new user document in the 'users' collection
-            user_ref = db.collection('users').document(username)
-            user_ref.set({
+            # Check if the username is already taken
+            if user_collections.find_one({'username': username}):
+                flash('Username already taken. Please choose another.', 'error')
+                return redirect(url_for('signup'))
+
+            # Create a new user document
+            new_user = {
                 'username': username,
-                'password': password,  # Note: You might want to hash the password for security
+                'password': hashed_password,
                 'first_name': first_name,
                 'last_name': last_name,
                 'email': email,
                 'contact_number': contact_number
-            })
+            }
+
+            # Insert the new user into the user collection
+            user_collections.insert_one(new_user)
+
             # Successful sign-up, you can add session handling or redirect as needed
             flash('Signup successful! You can now log in.', 'success')
             session['username'] = username
-            return redirect(url_for('home.home_route'))
+            return redirect(url_for('search_collections'))
         except Exception as e:
             # Error during user creation
             print(f"Error during sign-up: {e}")
@@ -161,13 +195,10 @@ def inject_user_info():
     if 'username' in session:
         username = session['username']
         user_info['is_logged_in'] = True
-        # Retrieve user information from Firestore using the username
-        users_ref = db.collection('users')
-        query = users_ref.where('username', '==', username).limit(1)
-        user_documents = list(query.stream())
-        if len(user_documents) == 1:
-            user_doc = user_documents[0].to_dict()
-            user_info['first_name'] = user_doc.get('first_name')
+        # Retrieve user information from the 'user_collections' collection using the username
+        user = user_collections.find_one({'username': username})
+        if user:
+            user_info['first_name'] = user.get('first_name')
             user_info['username'] = username
     return {'user_info': user_info}
 
@@ -222,6 +253,7 @@ def generate_presentation():
     if request.method == 'POST':
         action = request.form.get('action')
         if action == 'action1':
+            username = session.get('username')
             content = request.form.get('contents')
             template_choice = session.get('selected_template')
             print(template_choice)
@@ -261,7 +293,7 @@ def generate_presentation():
                     shutil.rmtree(images_folder)
 
                 os.makedirs(images_folder)
-                image_paths = convert_ppt_to_images(ppt_path, images_folder, cleaned_topic)
+                image_paths = convert_ppt_to_images(ppt_path, images_folder, cleaned_topic, username)
                 image_files = slideshow(images_folder, cleaned_topic)
                 return render_template('GeneratePresentation.html', image_files=image_files)
             except Exception as e:
@@ -320,11 +352,14 @@ def generate_presentation():
 
 def slideshow(images_folder, topic):
     # Get the list of image files in the static folder
-    print("imgf:" + images_folder)
     image_files = [f"static/{topic}/{file}" for file in os.listdir(f"static/{topic}") if file.endswith('.png')]
 
-    # Sort the images based on their filenames
-    image_files.sort()
+    # Extract the numerical part of the filename and use it as the sorting key
+    def extract_number(filename):
+        return int(''.join(filter(str.isdigit, filename)))
+
+    # Sort the images based on the numerical part of their filenames
+    image_files.sort(key=extract_number)
 
     # Render the template with the list of image files
     return image_files
@@ -340,37 +375,20 @@ def select_template():
         return render_template('GeneratePresentation.html', template_name=template_name)
 
 
-conversion_counter = 0
-def save_slides_as_images(pptx_path, output_folder):
-    global conversion_counter
-    conversion_counter += 1
-    conversion_id = conversion_counter
+def convert_ppt_to_images(ppt_path, output_folder, topic, username):
+    # Connect to MongoDB
+    client = MongoClient("mongodb+srv://thertj:amara@smartsync.kafshog.mongodb.net/?retryWrites=true&w=majority")
+    db = client['test2']
+    new_collection = f'{username}_{topic}'
 
-    pres = slides.Presentation(pptx_path)
+    if new_collection not in db.list_collection_names():
+        db.create_collection(new_collection)
 
-    # Convert conversion_id to a string to use it in the folder name
-    conversion_folder_name = f"conversion_{conversion_id}"
-    conversion_images_folder = os.path.join(output_folder, conversion_folder_name)
+    image_collection = db[new_collection]
 
-    if not os.path.exists(conversion_images_folder):
-        print("0")
-        os.makedirs(conversion_images_folder)
-
-    # Loop through slides
-    for index, slide in enumerate(pres.slides):
-        # Define custom size
-        size = drawing.Size(1080, 720)
-
-        # Save as PNG within the conversion folder
-        image_path = os.path.join(conversion_images_folder, f"slide_{index}.png")
-        slide.get_thumbnail(size).save(image_path, drawing.imaging.ImageFormat.png)
-
-    return [f"slide_{index}.png" for index in range(len(pres.slides))], conversion_id
-
-
-def convert_ppt_to_images(ppt_path, output_folder, topic):
     presentation = Presentation()
     print(output_folder)
+
     try:
         # Load the PowerPoint presentation
         presentation.LoadFromFile(ppt_path)
@@ -385,13 +403,33 @@ def convert_ppt_to_images(ppt_path, output_folder, topic):
             image.Save(file_name)
             image_paths.append(file_name)
             image.Dispose()
+
+            # Save the image path to MongoDB
+            image_collection.insert_one({
+                'topic': topic,
+                'slide_number': i + 1,
+                'image_path': file_name
+            })
         print("success")
         return image_paths
 
     finally:
         # Dispose of the presentation object
         presentation.Dispose()
+        # Close the MongoDB connection
+        client.close()
 
+
+# Insert image to MONGODB
+def insert_image(image_path):
+    with open(image_path, 'rb') as image_file:
+        image_binary = image_file.read()
+        document = {
+            "filename": os.path.basename(image_path),
+            "image_data": image_binary,
+        }
+        result = collection.insert_one(document)
+        return result.inserted_id
 
 def convert_updated_slide(ppt_path, output_folder, topic, slideNum):
     presentation = Presentation()
@@ -423,6 +461,120 @@ def convert_updated_slide(ppt_path, output_folder, topic, slideNum):
         # Dispose of the presentation object
         presentation.Dispose()
 
+
+#Custom JSON Encoder
+class MongoJSONEncoder(json.JSONEncoder):
+    def default(self, obj, **kwargs):
+        if isinstance(obj, (ObjectId,)):
+            return str(obj)
+        return json.JSONEncoder.default(self, obj, **kwargs)
+
+
+def get_user_collections(username, db):
+    # Find collections for the specified username
+    username_prefix = f'{username}_'
+    collections_with_username = [collection for collection in db.list_collection_names() if collection.startswith(username_prefix)]
+    return collections_with_username
+
+
+def get_first_slide_from_collections(username, db):
+    collections_with_username = get_user_collections(username, db)
+    result_data = []
+
+    for collection_name in collections_with_username:
+        collection = db[collection_name]
+        first_slide_document = collection.find_one({'slide_number': 1})
+
+        if first_slide_document:
+            # Ensure the '_id' field is converted to a string for JSON serialization
+            first_slide_document['_id'] = str(first_slide_document['_id'])
+            result_data.append(first_slide_document)
+
+    return result_data
+
+
+@app.route('/search_collections')
+def search_collections():
+    if 'username' in session:
+        username = session['username']
+        result_data = get_first_slide_from_collections(username, db)
+
+        # Print success if the search is done
+        print('success')
+
+        # Convert Base64 image data
+        for document in result_data:
+            if 'image_path' in document:
+                try:
+                    # Read the image file and encode it in Base64
+                    image_path = document['image_path']
+                    with open(image_path, 'rb') as image_file:
+                        image_data = base64.b64encode(image_file.read()).decode('utf-8')
+                        document['image_data'] = f"data:image/jpeg;base64,{image_data}"
+                except Exception as e:
+                    print(f"Error encoding image data: {e}")
+
+        return render_template('Home.html', data=result_data)
+    else:
+        return jsonify({'error': 'User not logged in'})
+
+@app.route('/get_image/<document_id>')
+def get_image(document_id):
+    # Retrieve the document by its ID
+    document = collection.find_one({"_id": document_id})
+
+    if document:
+        # Extract the image data from the document
+        image_data = document.get("image_data", None)
+
+        if image_data:
+            # Convert the image data to bytes
+            image_bytes = io.BytesIO(image_data)
+
+            # Return the image as a response with the correct content type
+            return send_file(image_bytes, mimetype='image/jpeg')
+
+    # Return an error response if the document or image data is not found
+    return "Image not found", 404
+
+
+@app.route('/view_presentation/<folder_path>')
+def view_presentation(folder_path):
+    try:
+        # Get the folder_path from the query parameters
+        folder_path = request.args.get('folder_path')
+
+        if not folder_path:
+            raise ValueError("Folder path not provided")
+
+        # Construct the full path to the folder based on the provided folder_path
+        full_folder_path = os.path.join('static', folder_path)
+
+        # Get the list of image files in the specified folder_path
+        image_files = get_image_files(full_folder_path)
+
+        return render_template('ViewPresentation.html', image_files=image_files)
+
+    except Exception as e:
+        print(f"Error viewing presentation: {e}")
+        return "Presentation not found", 404
+
+
+def get_image_files(folder_path):
+    try:
+        # Use os.listdir to get a list of files in the specified folder_path
+        image_files = [f for f in os.listdir(folder_path) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+        # Construct the full path for each image file
+        image_files = [os.path.join(folder_path, file) for file in image_files]
+        return image_files
+    except Exception as e:
+        print(f"Error getting image files: {e}")
+        return []
+
+
+
+
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -439,25 +591,7 @@ def download_file(filename):
         os.abort(404)
 
 
-def save_to_firebase_storage(local_filename, title, username):
-    if username and title:
-        # Generate a unique filename for Firebase Storage
-        firebase_filename = f"{username}_{title}_{str(uuid.uuid4())}.pptx"
-        firebase_path = f"presentations/{firebase_filename}"
 
-        # Upload the file to Firebase Storage
-        firebase_storage.blob(firebase_path).upload_from_filename(local_filename)
-
-        # Add the Firebase storage path to the "presentations" collection in Firestore
-        user_ref = db.collection('presentations').document(username)
-        user_ref.set({
-            'username': username,
-            'title': title,
-            'firebase_path': firebase_path,
-        })
-    else:
-        print("Error in saving to database")
-        flash('Error: Username or title is missing.', 'error')
 
 app.config['PERMANENT_SESSION_LIFETIME'] = 24 * 60 * 60
 if __name__ == '__main__':

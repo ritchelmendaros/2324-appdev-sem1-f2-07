@@ -364,6 +364,21 @@ def slideshow(images_folder, topic):
     # Render the template with the list of image files
     return image_files
 
+@app.route('/slideshow1', methods=['POST'])
+def slideshow1(topic):
+    images_folder = 'static'
+    # Get the list of image files in the static folder
+    image_files = [f"static/{topic}/{file}" for file in os.listdir(f"static/{topic}") if file.endswith('.png')]
+
+    # Extract the numerical part of the filename and use it as the sorting key
+    def extract_number(filename):
+        return int(''.join(filter(str.isdigit, filename)))
+
+    # Sort the images based on the numerical part of their filenames
+    image_files.sort(key=extract_number)
+
+    # Render the template with the list of image files
+    return image_files
 
 @app.route('/select_template', methods=['POST'])
 def select_template():
@@ -490,8 +505,41 @@ def get_first_slide_from_collections(username, db):
             first_slide_document['_id'] = str(first_slide_document['_id'])
             result_data.append(first_slide_document)
 
+            topic = first_slide_document.get('topic', '')
+
     return result_data
 
+
+def get_images_in_folder(topic):
+    """
+    Get a list of image files in the specified folder.
+
+    Args:
+        folder_path (str): The path to the folder containing image files.
+
+    Returns:
+        List[str]: A list of image file names.
+    """
+    allowed_extensions = {'.jpg', '.jpeg', '.png', '.gif'}  # Add more extensions if needed
+    image_files = []
+
+    try:
+        for file_name in os.listdir('static'):
+            file_path = os.path.join('static', {topic})
+
+            # Check if it's a file and has an allowed extension
+            if os.path.isfile(file_path) and os.path.splitext(file_name)[1].lower() in allowed_extensions:
+                image_files.append(file_name)
+
+    except Exception as e:
+        print(f"Error getting images from folder: {e}")
+
+    return image_files
+
+def view_images(folder_name):
+    folder_path = os.path.join('static', folder_name)
+    image_files = get_images_in_folder(folder_path)
+    return render_template('image_gallery.html', images=image_files)
 
 @app.route('/search_collections')
 def search_collections():

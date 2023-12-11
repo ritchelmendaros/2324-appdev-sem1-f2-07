@@ -9,72 +9,38 @@
 <div class="latestPresentations">
     <div class="latest">Latest Presentations</div>
     <div class="btnCreate">
-        <a href="{{ url_for('choose.choosetemplate_route') }}"><button>Create New Presentation</button></a>
+<!--        <a href="{{ url_for('choose.choosetemplate_route') }}"><button>Create New Presentation</button></a>-->
     </div>
-   <div class="pastPresentations">
+    <div class="pastPresentations">
         {% if data %}
             {% for document in data %}
-                <a href="{{ url_for('view_presentation', folder_path=document['folder_path']) }}">
+                <a href="{{ url_for('presentation.view_presentation_route', folder_path=document['folder_path']) }}" onclick="getSlideTopic('{{ document['topic'] }}')">
                     <img src="{{ document['image_data'] }}" alt="{{ document['topic'] }} Slide {{ document['slide_number'] }}">
                 </a>
             {% endfor %}
         {% else %}
-            <p></p>
         {% endif %}
     </div>
-
-
-
-<!--        WORKINGGG-->
-<!--         {% if data %}-->
-<!--            {% for document in data %}-->
-<!--                {% if 'image_data' in document %}-->
-<!--                    <img src="{{ document['image_data'] }}" alt="{{ document['topic'] }} Slide {{ document['slide_number'] }}">-->
-<!--                {% endif %}-->
-<!--            {% endfor %}-->
-<!--        {% else %}-->
-<!--            <p>No images found for the user.</p>-->
-<!--        {% endif %}-->
-
-
-
-<!--         {% if first_slide_numbers %}-->
-<!--            {% for topic, slide_number in first_slide_numbers.items() %}-->
-<!--                {% for document in data %}-->
-<!--                    {% if document.topic == topic and document.slide_number == slide_number %}-->
-<!--                        <img src="data:image/jpeg;base64,{{ document.image_data }}" alt="{{ document.topic }} Slide {{ document.slide_number }}">-->
-<!--                    {% endif %}-->
-<!--                {% endfor %}-->
-<!--            {% endfor %}-->
-<!--        {% else %}-->
-<!--            <p>No images found for the user.</p>-->
-<!--        {% endif %}-->
-    </div>
+    <script>
+            function getSlideTopic(templateName) {
+<!--                window.location.href = "{{ url_for('presentation.view_presentation_route') }}?topic=" + encodeURIComponent(topic);-->
+                fetch('/select_template', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'template_name': templateName,
+                    }),
+                })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data); // Log the response from the server
+                    // You can handle the response as needed
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        </script>
 </div>
 </body>
 </html>
-
-
-
-
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-<!--    <head>-->
-<!--        <title>Home | SmartSync</title>-->
-<!--        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">-->
-<!--        {% include 'darkbluelogoheader.html' %}-->
-<!--    </head>-->
-<!--    <body>-->
-<!--        <div class="latestPresentations">-->
-<!--            <div class="latest">Latest Presentations</div>-->
-<!--            <div class="btnCreate">-->
-<!--                <a href="{{ url_for('choose.choose_route') }}"><button>Create New Presentation</button></a>-->
-<!--            </div>-->
-<!--            <div class="pastPresentations">-->
-<!--                <a href="{{ url_for('presentation.view_presentation_route') }}"><img src="static/pictures/2.png"></a>-->
-<!--                <a href="{{ url_for('presentation.view_presentation_route') }}"><img src="static/pictures/3.png"></a>-->
-<!--                <a href="{{ url_for('presentation.view_presentation_route') }}"><img src="static/pictures/4.png"></a>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </body>-->
-<!--</html>-->
